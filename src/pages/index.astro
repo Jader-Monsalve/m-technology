@@ -1,11 +1,35 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Care from "../components/Care.astro"
+import Footer from "../components/Footer.astro"
+import Hero from "../components/Hero.astro"
+import Navbar from "../components/Navbar.astro"
+import Products from "../components/Products.astro"
+import Contact from "../components/Contact.astro"
+import MainLayout from "../layouts/MainLayout.astro"
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+
+
+const title = 'Inicio'
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<Navbar />
+<MainLayout title = {title}>
+
+<section id="Inicio" class="py-20">
+<Hero />
+</section>
+
+<section id="Produtos">
+    <Products />
+</section>
+
+<section id="Cuidados" class="py-20">
+    <Care />
+</section>
+
+<section id="Contacts">
+    <Contact />
+</section>
+
+<Footer />
+</MainLayout>
