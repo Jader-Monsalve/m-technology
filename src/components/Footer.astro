@@ -1,7 +1,74 @@
 ---
-import "../styles/global.css"
-
+const socialLinks = [
+    { name: 'GitHub', url: 'https://github.com/', svg: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="32" height="32"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.73 1.27 3.4.97.11-.75.41-1.27.74-1.56-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 2.9-.39c.98 0 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.41-5.25 5.7.42.36.79 1.08.79 2.18 0 1.57-.01 2.84-.01 3.23 0 .31.21.67.8.56C20.71 21.39 24 17.08 24 12c0-6.27-5.23-11.5-12-11.5z"/></svg>` },
+    { name: 'Twitter', url: 'https://twitter.com/', svg: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="32" height="32"><path d="M24 4.56c-.89.39-1.84.65-2.84.77a4.93 4.93 0 0 0 2.16-2.72c-.95.56-2 .97-3.13 1.19A4.92 4.92 0 0 0 16.62 3c-2.73 0-4.94 2.21-4.94 4.94 0 .39.04.77.12 1.13C7.69 8.86 4.07 7.13 1.64 4.16c-.43.74-.68 1.6-.68 2.52 0 1.74.89 3.27 2.25 4.17-.83-.03-1.61-.25-2.29-.63v.06c0 2.43 1.73 4.46 4.03 4.92-.42.12-.87.18-1.33.18-.32 0-.63-.03-.93-.09.63 1.97 2.45 3.4 4.6 3.44A9.9 9.9 0 0 1 0 21.54a13.94 13.94 0 0 0 7.56 2.22c9.05 0 14-7.5 14-14 0-.21 0-.42-.02-.63A9.94 9.94 0 0 0 24 4.56z"/></svg>` },
+    { name: 'LinkedIn', url: 'https://linkedin.com/', svg: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="32" height="32"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.76s.78-1.76 1.75-1.76 1.75.79 1.75 1.76-.78 1.76-1.75 1.76zm13.5 11.27h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.89v1.36h.04c.4-.75 1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 4.59v5.59z"/></svg>` },
+];
 ---
 
-<h1>Footer</h1>
-<br><br><br><br><br><br><br>
+<footer class="w-full py-8 flex flex-col items-center bg-transparent">
+  <div class="flex gap-8">
+    {socialLinks.map(link => (
+      <a
+        href={link.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-white text-2xl transition-all duration-200 rounded-full p-2 bg-black/20 hover:text-blue-500 hover:scale-110"
+        aria-label={link.name}
+        set:html={link.svg}
+      />
+    ))}
+  </div>
+  <div class="mt-6 text-center text-sm text-gray-400">
+    © {new Date().getFullYear()} M-Technology. Todos los derechos reservados. <br />
+    <a href="#" id="condiciones-link" class="underline hover:text-blue-400">Condiciones de uso</a>
+  </div>
+
+<div id="modal-condiciones" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 hidden">
+    <div class="bg-white/90 rounded-lg p-8 max-w-lg w-full relative">
+        <button id="close-modal" class="absolute top-2 right-2 text-gray-600 hover:text-red-500 text-2xl">&times;</button>
+        <h2 class="text-xl font-bold mb-4">Condiciones de uso</h2>
+        <div class="text-gray-700 text-sm max-h-96 overflow-y-auto">
+            <p><strong>1. Aceptacion de las condiciones</strong><br />
+            Al acceder y utilizar este sitio web de M-Technology, usted acepta cumplir con estas condiciones de uso y todas las leyes y regulaciones aplicables.</p>
+            <br />
+            <p><strong>2. Propiedad intelectual</strong><br />
+            Todo el contenido, logotipos, graficos y software en este sitio son propiedad de M-Technology o de sus licenciantes y estan protegidos por las leyes de derechos de autor y propiedad intelectual.</p>
+            <br />
+            <p><strong>3. Uso permitido</strong><br />
+            Usted puede navegar y utilizar este sitio solo para fines personales y no comerciales. No esta permitido copiar, modificar, distribuir o reproducir ningun contenido sin autorizacion previa por escrito de M-Technology.</p>
+            <br />
+            <p><strong>4. Limitacion de responsabilidad</strong><br />
+            M-Technology no se hace responsable de danos directos o indirectos derivados del uso o imposibilidad de uso de este sitio web.</p>
+            <br />
+            <p><strong>5. Enlaces a terceros</strong><br />
+            Este sitio puede contener enlaces a sitios de terceros. M-Technology no se responsabiliza por el contenido o politicas de privacidad de dichos sitios.</p>
+            <br />
+            <p><strong>6. Modificaciones</strong><br />
+            M-Technology se reserva el derecho de modificar estas condiciones en cualquier momento. Las modificaciones seran efectivas una vez publicadas en el sitio.</p>
+            <br />
+            <p><strong>7. Ley aplicable</strong><br />
+            Estas condiciones se rigen por las leyes aplicables en la jurisdiccion donde opera M-Technology.</p>
+            <br />
+            <p>Si tiene preguntas sobre estas condiciones, contactenos a traves de nuestros canales oficiales.</p>
+        </div>
+    </div>
+</div>
+
+  <script type="module" is:inline>
+    const link = document.getElementById('condiciones-link');
+    const modal = document.getElementById('modal-condiciones');
+    const close = document.getElementById('close-modal');
+    link?.addEventListener('click', (e) => {
+      e.preventDefault();
+      modal.classList.remove('hidden');
+    });
+    close?.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+    // Cierra el modal al hacer click fuera del contenido
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.add('hidden');
+    });
+  </script>
+</footer>

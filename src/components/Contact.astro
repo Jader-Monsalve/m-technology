@@ -1,6 +1,75 @@
 ---
-
+import "../styles/global.css";
+const whatsappNumber = "+573019030729";
+const whatsappLink = `https://wa.me/${whatsappNumber.replace(/\D/g, "")}`;
+const mapsAddress = "Cra. 1 #23-45, Ciudad, País";
+const mapsQuery = encodeURIComponent(mapsAddress);
 ---
 
-<h1>Contact</h1>
-<br><br><br><br><br><br><br>
+<section class=" py-32 md:py-40 bg-white/15 backdrop-blur-md rounded-2xl p-8 max-w-lg mx-auto mt-8 shadow-lg text-[#22223b]">
+    <h2 class="text-2xl font-bold mb-6 text-center text-white">Contactanos</h2>
+    <form id="contactForm" class="flex flex-col gap-4">
+        <label class="flex flex-col gap-1">
+            Nombre:
+            <input type="text" name="name" required class="rounded-lg p-3 bg-[#22223b]/10 text-[#22223b] text-base outline-none" />
+        </label>
+        <label class="flex flex-col gap-1">
+            Ubicacion:
+            <input type="text" name="location" required class="rounded-lg p-3 bg-[#22223b]/10 text-[#22223b] text-base outline-none" />
+        </label>
+        <label class="flex flex-col gap-1">
+            Producto:
+            <input type="text" name="product" required class="rounded-lg p-3 bg-[#22223b]/10 text-[#22223b] text-base outline-none" />
+        </label>
+        <label class="flex flex-col gap-1">
+            Cantidad:
+            <input type="number" name="quantity" min="1" required class="rounded-lg p-3 bg-[#22223b]/10 text-[#22223b] text-base outline-none" />
+        </label>
+        <label class="flex flex-col gap-1">
+            Forma de pago:
+            <select name="payment" required class="rounded-lg p-3 bg-[#22223b]/10 text-[#22223b] text-base outline-none">
+                <option value="">Selecciona una opcion</option>
+                <option value="Bancolombia">Bancolombia</option>
+                <option value="Nequi">Nequi</option>
+                <option value="Efectivo">Efectivo</option>
+            </select>
+        </label>
+        <label class="flex flex-col gap-1">
+            Mensaje adicional:
+            <textarea name="message" class="rounded-lg p-3 bg-[#22223b]/10 text-[#22223b] text-base outline-none resize-none"></textarea>
+        </label>
+        <button type="submit" class="bg-green-500 text-white rounded-lg p-3 font-bold cursor-pointer transition-colors hover:bg-green-600">
+            Enviar a WhatsApp
+        </button>
+    </form>
+    <div class="mt-6">
+        <strong class="text-white">Ubicacion:</strong>
+        <p>Calle 70# 52D-36</p>
+        <iframe
+            src={`https://www.google.com/maps?q=${encodeURIComponent("calle 70# 52D-36 itagui, antioquia")}&output=embed`}
+            width="100%"
+            height="200"
+            class="border-0 rounded-lg mt-2"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+    </div>
+</section>
+
+<script type="module">
+    if (typeof window !== "undefined") {
+        document.getElementById("contactForm")?.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const name = e.target.name.value;
+            const product = e.target.product.value;
+            const quantity = e.target.quantity.value;
+            const payment = e.target.payment.value;
+            const message = e.target.message.value;
+            const phone = "{whatsappNumber}";
+            const text = `Hola, soy ${name}.%0AProducto: ${product}%0ACantidad: ${quantity}%0AForma de pago: ${payment}%0AMensaje adicional: ${encodeURIComponent(message)}`;
+            const url = `https://wa.me/${phone.replace(/\D/g, '')}?text=${text}`;
+            window.open(url, "_blank");
+        });
+    }
+</script>
