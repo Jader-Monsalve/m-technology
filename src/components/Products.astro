@@ -3,5 +3,59 @@ import "../styles/global.css"
 
 ---
 
-<h1>Productos</h1>
-<br><br><br><br><br><br><br>
+<section id="Products" class="py-16 md:py-28 bg-transparent text-white">
+  <div class="max-w-6xl mx-auto px-6 text-center">
+
+    <!-- título -->
+    <h2 class="text-3xl md:text-4xl font-bold mb-12 text-white">
+      Our Products
+    </h2>
+
+    <!-- Grid de productos -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+
+      <!-- Producto 1 -->
+      <div class="bg-[#1b2a33] p-6 rounded-xl shadow-md hover:shadow-green-500/40 transition-transform transform hover:-translate-y-2">
+        <model-viewer 
+          src="/models/airpods.glb"
+          alt="AirPods 2nd Gen"
+          camera-controls
+          auto-rotate
+          ar
+          style="width: 100%; height: 300px;">
+        </model-viewer>
+        <h3 class="mt-4 text-xl font-semibold text-green-500">AirPods 2nd Gen</h3>
+        <p class="text-gray-300 mt-2">High-quality sound with immersive design.</p>
+      </div>
+
+      <!-- Producto 2 -->
+      <div class="bg-[#1b2a33] p-6 rounded-xl shadow-md hover:shadow-cyan-500/40 transition-transform transform hover:-translate-y-2">
+        <model-viewer 
+          src="models/airpod_max.glb"
+          alt="P9 Pro Max"
+          camera-controls
+          auto-rotate
+          ar
+          style="width: 100%; height: 300px;">
+        </model-viewer>
+        <h3 class="mt-4 text-xl font-semibold text-green-500">P9 Pro Max</h3>
+        <p class="text-gray-300 mt-2">A smartphone built for performance and style.</p>
+      </div>
+
+      <!-- Producto 3 -->
+      <div class="bg-[#1b2a33] p-6 rounded-xl shadow-md hover:shadow-cyan-500/40 transition-transform transform hover:-translate-y-2">
+        <model-viewer 
+          src="models/airpods.glb"
+          alt="Smartwatch 10 Ultra 2-gs"
+          camera-controls
+          auto-rotate
+          ar
+          style="width: 100%; height: 300px;">
+        </model-viewer>
+        <h3 class="mt-4 text-xl font-semibold text-green-500">Smartwatch 10 Ultra 2-gs</h3>
+        <p class="text-gray-300 mt-2">Track your health with cutting-edge technology.</p>
+      </div>
+
+    </div>
+  </div>
+</section>

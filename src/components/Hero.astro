@@ -2,6 +2,23 @@
 import "../styles/global.css"
 
 ---
+<section id="Hero" class="text-center py-20 md:py-28 overflow-hidden flex flex-col justify-center items-center">
+  <!-- Fondo con cometas ya lo tienes en tu index -->
+  <div class="absolute inset-0 -z-10"></div>
 
-<h1>Hero</h1>
-<br><br><br><br><br><br><br>
+  <!-- Título con efecto typing -->
+  <h1 class="text-4xl md:text-6xl font-bold mb-4 py-10 md:py-20 text-white typing-effect">
+    Welcome to M-Technology
+  </h1>
+
+  <!-- Subtítulo con fade-in -->
+  <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto animate-fadeIn opacity-0 delay-300">
+    En M-Technology, nos especializamos en ofrecer soluciones tecnologicas innovadoras que impulsan la transformacion digital de tu empresa y mejoran tu vida cotidiana. Nuestro equipo combina experiencia y creatividad para desarrollar productos y servicios personalizados, adaptados a las necesidades de un mundo cada vez mas conectado. Descubre como nuestras herramientas pueden ayudarte a optimizar procesos, aumentar tu productividad y alcanzar tus objetivos tecnologicos con confianza y seguridad.
+  </p>
+
+  <!-- Botón con animación de entrada -->
+  <a href="#services"
+     class="inline-block bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 animate-fadeIn opacity-0 delay-600">
+    Explore Our Services
+  </a>
+</section>

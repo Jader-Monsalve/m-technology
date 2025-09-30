@@ -6,30 +6,36 @@ import Navbar from "../components/Navbar.astro"
 import Products from "../components/Products.astro"
 import Contact from "../components/Contact.astro"
 import MainLayout from "../layouts/MainLayout.astro"
+import Background from "../components/Background.astro"
 
 
 
 const title = 'Inicio'
 ---
 
+<Background />
 <Navbar />
 <MainLayout title = {title}>
 
-<section id="Inicio" class="py-20">
+<section id="Hero">
 <Hero />
 </section>
 
-<section id="Produtos">
+<section id="Products">
     <Products />
 </section>
 
-<section id="Cuidados" class="py-20">
+<section id="Care">
     <Care />
 </section>
 
-<section id="Contacts">
+<section id="Contact">
     <Contact />
 </section>
 
 <Footer />
 </MainLayout>
+
+// Importar el script de model-viewer
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</script>

@@ -16,15 +16,21 @@ const {title} = Astro.props;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="imagen/svg+xml" href="/public/Logo-head.jpg" />
+    <link rel="icon" type="imagen/svg+xml" href="/Logo-head.jpg" />
     <meta name="generator" content={Astro.generator}>
 
     <title>{title}</title>
 
 </head>
-<body class="bg-slate-100 text-stone-950">
+<body>
     <main>
         <slot />
     </main>
 </body>
 </html>
+ 
+<style>
+    body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    }
+</style>
