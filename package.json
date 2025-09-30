@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@astrojs/tailwind": "^6.0.2",
+    "@fortawesome/fontawesome-free": "^7.0.1",
+    "@lottiefiles/lottie-player": "^2.0.12",
     "astro": "^5.14.1",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",

@@ -1,0 +1,79 @@
+---
+import "../styles/global.css";
+---
+
+<section id="payments" class="py-20 text-white relative overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6 text-center">
+
+    <!-- Título -->
+    <h2 class="text-3xl md:text-4xl font-bold mb-12 text-white animate-fadeIn">
+      Metodos de Pago
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+
+      <!-- Texto y métodos -->
+      <div class="text-left animate-fadeIn delay-200">
+        <h3 class="text-2xl font-semibold mb-4 text-green-500">Opciones Disponibles</h3>
+        <p class="text-gray-300 mb-6">
+          Realizamos <span class="text-green-500 font-semibold">envios en toda Antioquia</span>.
+          Puedes pagar de la forma que mas te convenga:
+        </p>
+
+        <!-- Logos interactivos -->
+        <div class="flex gap-8 flex-wrap justify-center md:justify-start">
+          <img src="/Bancolombia.svg" alt="Bancolombia" class="payment-logo" />
+          <img src="/Nequi.svg" alt="Nequi" class="payment-logo" />
+          <img src="/Efectivo.svg" alt="Efectivo" class="payment-logo" />
+        </div>
+
+        <!-- Pago contra entrega -->
+        <div class="mt-8 p-4 bg-[#1b2a33] rounded-xl shadow-md border border-cyan-500/40 animate-fadeIn delay-400">
+          <h4 class="text-xl font-semibold text-green-500">Pago Contra Entrega</h4>
+          <p class="text-white mt-2">Recibe tu pedido en casa y paga cuando lo recibas.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* Logos interactivos */
+.payment-logo {
+  width: 7rem;
+  height: auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+.payment-logo:hover {
+  transform: scale(1.15) rotate(-5deg);
+  box-shadow: 0 0 20px 5px rgba(0, 255, 255, 0.6);
+  animation: bounce 0.5s ease;
+}
+
+/* Bounce */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0) scale(1.15); }
+  50% { transform: translateY(-12px) scale(1.2); }
+}
+
+/* Fade-in al cargar */
+.animate-fadeIn {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.8s forwards;
+}
+.animate-fadeIn.delay-200 { animation-delay: 0.2s; }
+.animate-fadeIn.delay-400 { animation-delay: 0.4s; }
+
+@keyframes fadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Opcional: efecto tilt con mouse */
+.payment-logo:hover {
+  transform: scale(1.15) rotateX(5deg) rotateY(5deg);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+</style>

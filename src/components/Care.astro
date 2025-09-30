@@ -1,6 +1,133 @@
 ---
-import "../styles/global.css"
+import "../styles/global.css";
+
+const products = [
+  {
+    name: "AirPods Pro 2",
+    icon: "/airpods.png",
+    care: [
+      "Usa pano suave y seco para limpiar auriculares y funda.",
+      "Carga solo con cable oficial o certificado.",
+      "Guarda en la funda cuando no uses para protegerlos.",
+      "Evita altas temperaturas, agua o golpes."
+    ]
+  },
+  {
+    name: "P9 Pro Max",
+    icon: "/airpods_max.png",
+    care: [
+      "Usa protector de pantalla.",
+      "Limpieza con pano microfibra seco.",
+      "Carga con cables oficiales, evita batería 0% frecuente.",
+      "Usa funda y evita sol directo o agua."
+    ]
+  },
+  {
+    name: "Smartwatch 10 Ultra 2-GS",
+    icon: "/Smartwatch 10 Ultra 2-GS.png",
+    care: [
+      "Limpieza con paño seco o ligeramente humedo.",
+      "Carga solo con cargador original.",
+      "Evita golpes y contacto con químicos o perfumes.",
+      "Revisa resistencia al agua; no sumergir por mucho tiempo."
+    ]
+  },
+  {
+    name: "Cargador de iPhone",
+    icon: "/cargador.png",
+    care: [
+      "Usar solo con dispositivos compatibles.",
+      "No enredar el cable; guardar en lugar seco.",
+      "Limpiar con pano seco; evitar liquidos.",
+      "Evitar tirones, doblar cerca de conectores o usar cargadores danados."
+    ]
+  }
+];
 ---
 
-<h1>Care</h1>
-<br><br><br><br><br><br><br>
+<section id="care" class="py-20 relative z-10 bg-transparent">
+  <div class="max-w-6xl mx-auto px-6 text-center">
+    <h2 class="text-3xl md:text-4xl font-bold mb-12 text-white animate-fadeIn">
+      Guia de Cuidados de Productos
+    </h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      {products.map(product => (
+        <div 
+          class="care-card group relative p-6 rounded-2xl border border-cyan-500/40 bg-transparent shadow-md transform transition duration-300 cursor-pointer overflow-hidden will-change-transform"
+        >
+          <!-- Bordes neón animados -->
+          <div class="absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-r from-cyan-500/40 to-cyan-600/40 blur-xl opacity-30 animate-gradient pointer-events-none"></div>
+<script>
+  // Espera a que el DOM esté listo
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.care-card').forEach(card => {
+      const divCard = card as HTMLDivElement;
+      divCard.addEventListener('mousemove', (e) => {
+        const event = e as MouseEvent;
+        const rect = divCard.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * 10;
+        const rotateY = ((x - centerX) / centerX) * -10;
+        divCard.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+      });
+      divCard.addEventListener('mouseleave', () => {
+        divCard.style.transform = "perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)";
+      });
+    });
+  });
+</script>
+
+          <!-- Icono animado -->
+          <img src={product.icon} alt={product.name} 
+            class="w-16 h-16 mx-auto mb-4 transform transition duration-500 group-hover:scale-125 group-hover:rotate-[20deg] animate-icon" />
+
+          <h3 class="text-xl font-semibold mb-4 text-green-500">{product.name}</h3>
+          <ul class="text-gray-300 list-disc list-inside space-y-2">
+            {product.care.map(item => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+/* Fade-in animación */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.8s forwards;
+}
+
+/* Bordes neón animados */
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease infinite;
+}
+
+/* Iconos micro-animación */
+@keyframes iconBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.animate-icon {
+  animation: iconBounce 2s infinite ease-in-out;
+}
+
+/* Hover glow */
+.care-card:hover {
+  box-shadow: 0 0 35px 10px rgba(0, 255, 255, 0.6);
+}
+</style>

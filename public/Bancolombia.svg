@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200">
+  <rect width="600" height="200" fill="#fff"></rect>
+  <path d="M180 50 L250 50 L240 100 L170 100 Z" fill="#ffcf00"></path>
+  <path d="M250 50 L320 50 L310 100 L240 100 Z" fill="#0033a0"></path>
+  <path d="M320 50 L390 50 L380 100 L310 100 Z" fill="#e4002b"></path>
+  <text x="50" y="170" font-size="50" font-family="Arial, sans-serif" fill="#0033a0">Bancolombia</text>
+</svg>
