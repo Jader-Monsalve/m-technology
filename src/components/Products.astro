@@ -1,99 +1,189 @@
 ---
 import "../styles/global.css"
-
 ---
 
 <section id="Products" class="py-32 md:py-40 bg-transparent text-white">
-  <div class="max-w-6xl mx-auto px-6 text-center">
 
-    <!-- título -->
-    <h2 class="text-3xl md:text-4xl font-bold mb-12 text-white">
-      Nuestros Productos
-    </h2>
+  <div class="max-w-6xl mx-auto px-6 flex flex-col space-y-12">
 
-    <!-- Grid de productos -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+    <!-- Producto 1 -->
+    <div class="bg-[#1b2a33] p-8 rounded-xl shadow-md hover:shadow-cyan-500/40 transition-transform transform hover:-translate-y-2">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-10">
 
-      <!-- Producto 1 -->
-<div class="bg-[#1b2a33] p-6 rounded-xl shadow-md hover:shadow-cyan-500/40 transition-transform transform hover:-translate-y-2">
-    <model-viewer
-        src="/models/airpods.glb"
-        alt="AirPods 2nd Gen"
-        camera-controls
-        auto-rotate
-        ar
-        style="width: 100%; height: 300px;">
-    </model-viewer>
-    <h3 class="mt-4 text-xl font-semibold text-cyan-500">AirPods 2nd Gen</h3>
-    <p class="text-gray-300 mt-2">Auriculares inalambricos con estuche de carga y control tactil.</p>
-    <p class="text-gray-400 mt-1 text-sm">Garantia: 8 meses</p>
-    <a href="https://wa.me/3019030729" target="_blank"
-     class="inline-flex items-center gap-2 mt-4 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
-    <i class="fab fa-whatsapp text-xl"></i>
-    Comprar por WhatsApp
-</a>
-</div>
+        <!-- Columna Izquierda: Texto -->
+        <div class="w-full md:w-1/2 text-left">
+          <!-- Título -->
+          <h3 class="text-3xl md:text-4xl font-bold text-white">AirPods Pro 2 – Calidad 1.1</h3>
 
-<!-- Producto 2 -->
-<div class="bg-[#1b2a33] p-6 rounded-xl shadow-md hover:shadow-cyan-500/40 transition-transform transform hover:-translate-y-2">
-    <model-viewer 
-        src="models/airpod_max.glb"
-        alt="P9 Pro Max"
-        camera-controls
-        auto-rotate
-        ar
-        style="width: 100%; height: 300px;">
-    </model-viewer>
-    <h3 class="mt-4 text-xl font-semibold text-cyan-500">P9 Pro Max</h3>
-    <p class="text-gray-300 mt-2">Auriculares inalambricos con cancelacion activa de ruido y sonido envolvente de alta fidelidad.</p>
-    <p class="text-gray-400 mt-1 text-sm">Garantia: 8 meses</p>
-    <a href="https://wa.me/3019030729" target="_blank"
-     class="inline-flex items-center gap-2 mt-4 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
-    <i class="fab fa-whatsapp text-xl"></i>
-    Comprar por WhatsApp
-</a>
-</div>
+          <!-- Descripción -->
+          <p class="text-gray-300 mt-4 text-base md:text-lg">
+            Vive una experiencia auditiva inmersiva con los nuevos AirPods Pro 2 de calidad 1.1. Disfruta de cancelación activa de ruido, sonido envolvente y un diseño ergonómico que se adapta perfectamente a tus oídos. Incluyen estuche de carga y sensores táctiles para un control fácil y cómodo. ¡Perfectos para el día a día, el gimnasio o el trabajo!
+          </p>
 
-<!-- Producto 3 -->
-<div class="bg-[#1b2a33] p-6 rounded-xl shadow-md hover:shadow-cyan-500/40 transition-transform transform hover:-translate-y-2">
-    <model-viewer 
-        src="models/apple_watch_ultra_2.glb"
-        alt="Smartwatch 10 Ultra 2-gs"
-        camera-controls
-        auto-rotate
-        ar
-        style="width: 100%; height: 300px;">
-    </model-viewer>
-    <h3 class="mt-4 text-xl font-semibold text-cyan-500">Smartwatch 10 Ultra 2-gs</h3>
-    <p class="text-gray-300 mt-2">Reloj inteligente resistente al agua, con monitoreo de salud, GPS y bateria de larga duracion.</p>
-    <p class="text-gray-400 mt-1 text-sm">Garantia: 8 meses</p>
-    <a href="https://wa.me/3019030729" target="_blank"
-     class="inline-flex items-center gap-2 mt-4 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
-    <i class="fab fa-whatsapp text-xl"></i>
-    Comprar por WhatsApp
-</a>
-</div>
+          <!-- Botón de WhatsApp -->
+          <a href="https://wa.me/3019030729" target="_blank"
+            class="inline-flex items-center gap-2 mt-6 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
+            <i class="fab fa-whatsapp text-xl"></i>
+            Comprar por WhatsApp
+          </a>
 
-<!-- Producto 4 -->
+          <!-- Colores disponibles -->
+          <div class="mt-8">
+            <p class="text-white font-medium mb-2">Colores disponibles:</p>
+            <div class="flex items-center gap-6">
+              <!-- Color 1 -->
+              <div class="text-center">
+                <img src="/Products/airpods.png" alt="White"
+                  class="w-14 h-14 object-contain">
+                <p class="text-sm text-gray-300 mt-1">$55.00<br>Blanco</p>
+              </div>
+              <!-- Color 2 -->
+              <div class="text-center">
+                <img src="/Products/airpods-pro-2nd-black-generation-png-removebg-preview.png" alt="Black"
+                  class="w-14 h-14 object-contain">
+                <p class="text-sm text-gray-300 mt-1">$55.00<br>Negro</p>
+              </div>
+              <!-- garantía -->
+              <p class="text-gray-400 mt-1 text-sm">Garantia: 8 meses</p>
+            </div>
+          </div>
+        </div>
 
-<div class="bg-[#1b2a33] p-6 rounded-xl shadow-md hover:shadow-cyan-500/40 transition-transform transform hover:-translate-y-2">
-  <model-viewer 
-    src="models/iphone_charger.glb"
-    alt="Cargador Iphone tipo C"
-    camera-controls
-    auto-rotate
-    ar
-    style="width: 100%; height: 300px;">
-  </model-viewer>
-  <h3 class="mt-4 text-xl font-semibold text-cyan-500">Cargador Iphone tipo C</h3>
-  <p class="text-gray-300 mt-2">Cargador original para iPhone con conector USB tipo C, carga rapida y segura.</p>
-  <p class="text-gray-400 mt-1 text-sm">Garantia: 8 meses</p>
-  <a href="https://wa.me/3019030729" target="_blank"
-   class="inline-flex items-center gap-2 mt-4 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
-  <i class="fab fa-whatsapp text-xl"></i>
-  Comprar por WhatsApp
-</a>
-</div>
-</div>
+        <!-- Columna Derecha: Modelo 3D -->
+        <div class="w-full md:w-1/2">
+          <model-viewer src="/models/airpods.glb" alt="AirPods 2nd Gen" camera-controls auto-rotate ar
+            style="width: 100%; height: 350px;">
+          </model-viewer>
+        </div>
+      </div>
+    </div>
+
+    <!-- Producto 2 -->
+    <div class="bg-[#1b2a33] p-8 rounded-xl shadow-md hover:shadow-cyan-500/40 transition-transform transform hover:-translate-y-2">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-10">
+
+        <!-- Columna Izquierda -->
+        <div class="w-full md:w-1/2 text-left">
+          <h3 class="text-3xl md:text-4xl font-bold text-white">P9 Pro Max – Calidad 1.1</h3>
+          <p class="text-gray-300 mt-4 text-base md:text-lg">
+            El equilibrio perfecto entre estilo, sonido y tecnología. Los P9 Pro Max de calidad 1.1 ofrecen una experiencia de audio envolvente con cancelación de ruido y almohadillas ultra cómodas. Su diseño elegante y moderno los convierte en el accesorio ideal para quienes buscan rendimiento y presencia. ¡Conéctalos y olvídate del mundo!
+          </p>
+          <a href="https://wa.me/3019030729" target="_blank"
+            class="inline-flex items-center gap-2 mt-6 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
+            <i class="fab fa-whatsapp text-xl"></i>
+            Comprar por WhatsApp
+          </a>
+
+          <!-- Colores -->
+          <div class="mt-8">
+            <p class="text-white font-medium mb-2">Colores disponibles:</p>
+            <div class="flex items-center gap-6">
+              <div class="text-center">
+                <img src="/Products/airpods_max-removebg-preview-removebg-preview.png" alt="Blanco" class="w-14 h-14 object-contain">
+                <p class="text-sm text-gray-300 mt-1">$55.00<br>Blanco</p>
+              </div>
+              <div class="text-center">
+                <img src="/Products/P9_Pro_Max-red-removebg-preview.png" alt="Red" class="w-14 h-14 object-contain">
+                <p class="text-sm text-gray-300 mt-1">$55.00<br>Rojo</p>
+              </div>
+              <div class="text-center">
+                <img src="/Products/P9_Pro_Max-removebg-preview.png" alt="Blue" class="w-14 h-14 object-contain">
+                <p class="text-sm text-gray-300 mt-1">$55.00<br>Azul</p>
+              </div>
+              <p class="text-gray-400 mt-1 text-sm">Garantia: 8 meses</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modelo 3D -->
+        <div class="w-full md:w-1/2">
+          <model-viewer src="/models/airpod_max.glb" alt="P9 Pro Max" camera-controls auto-rotate ar
+            style="width: 100%; height: 350px;">
+          </model-viewer>
+        </div>
+      </div>
+    </div>
+
+        <!-- Producto 3 -->
+    <div class="bg-[#1b2a33] p-8 rounded-xl shadow-md hover:shadow-cyan-500/40 transition-transform transform hover:-translate-y-2">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-10">
+
+        <!-- Columna Izquierda -->
+        <div class="w-full md:w-1/2 text-left">
+          <h3 class="text-3xl md:text-4xl font-bold text-white">Smartwatch 10 Ultra 2-gs – Calidad 1.1</h3>
+          <p class="text-gray-300 mt-4 text-base md:text-lg">
+           Más que un reloj, tu nuevo asistente personal. El Smartwatch 10 Ultra 2-gs calidad 1.1 combina elegancia, resistencia al agua y funciones avanzadas como monitoreo de salud, llamadas Bluetooth, notificaciones y GPS. Ideal para quienes buscan control total desde su muñeca. ¡Tecnología, salud y estilo en un solo dispositivo!
+          </p>
+          <a href="https://wa.me/3019030729" target="_blank"
+            class="inline-flex items-center gap-2 mt-6 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
+            <i class="fab fa-whatsapp text-xl"></i>
+            Comprar por WhatsApp
+          </a>
+
+          <!-- Colores -->
+          <div class="mt-8">
+            <p class="text-white font-medium mb-2">Colores disponibles:</p>
+            <div class="flex items-center gap-6">
+              <div class="text-center">
+                <img src="/Products/Smartwatch_10_Ultra_2-gs-back-removebg-preview.png" alt="Black" class="w-14 h-14 object-contain">
+                <p class="text-sm text-gray-300 mt-1">$55.00<br>Negro</p>
+              </div>
+              <div class="text-center">
+                <img src="/Products/Smartwatch_10_Ultra_2-gs___yellow-removebg-preview.png" alt="Yellow" class="w-14 h-14 object-contain">
+                <p class="text-sm text-gray-300 mt-1">$55.00<br>Amarillo</p>
+              </div>
+              <p class="text-gray-400 mt-1 text-sm">Garantia: 8 meses</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modelo 3D -->
+        <div class="w-full md:w-1/2">
+          <model-viewer src="/models/apple_watch_ultra_2.glb" alt="P9 Pro Max" camera-controls auto-rotate ar
+            style="width: 100%; height: 350px;">
+          </model-viewer>
+        </div>
+      </div>
+    </div>
+
+      <!-- Producto 4 -->
+    <div class="bg-[#1b2a33] p-8 rounded-xl shadow-md hover:shadow-cyan-500/40 transition-transform transform hover:-translate-y-2">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-10">
+
+        <!-- Columna Izquierda -->
+        <div class="w-full md:w-1/2 text-left">
+          <h3 class="text-3xl md:text-4xl font-bold text-white">Cargador iPhone Tipo C – Calidad 1.1</h3>
+          <p class="text-gray-300 mt-4 text-base md:text-lg">
+            Carga rápida, segura y confiable. El Cargador iPhone con conector Tipo C de calidad 1.1 es compatible con los últimos modelos y está diseñado para ofrecer una carga eficiente sin dañar la batería. Compacto, resistente y listo para acompañarte a donde vayas. ¡Nunca te quedes sin batería cuando más lo necesitas!
+          </p>
+          <a href="https://wa.me/3019030729" target="_blank"
+            class="inline-flex items-center gap-2 mt-6 bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
+            <i class="fab fa-whatsapp text-xl"></i>
+            Comprar por WhatsApp
+          </a>
+
+          <!-- Colores -->
+          <div class="mt-8">
+            <p class="text-white font-medium mb-2">Colores disponibles:</p>
+            <div class="flex items-center gap-6">
+              <div class="text-center">
+                <img src="/Products/cargador-iphone-tipo-c-carga-rapida-removebg-preview.png" alt="White" class="w-14 h-14 object-contain">
+                <p class="text-sm text-gray-300 mt-1">$55.00<br>Blanco</p>
+              </div>
+              <p class="text-gray-400 mt-1 text-sm">Garantia: 8 meses</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modelo 3D -->
+        <div class="w-full md:w-1/2">
+          <model-viewer src="/models/iphone_charger.glb" alt="P9 Pro Max" camera-controls auto-rotate ar
+            style="width: 100%; height: 350px;">
+          </model-viewer>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </section>
