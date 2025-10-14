@@ -27,39 +27,26 @@ import "../styles/global.css";
         <img src="/Nequi.svg" alt="Nequi" class="payment-logo" />
         <img src="/Efectivo.svg" alt="Efectivo" class="payment-logo" />
       </div>
-<!-- Recuadro de Contra Entrega -->
-<div class="mt-8 p-4 bg-[#1b2a33] rounded-xl shadow-md border border-cyan-500/40 animate-fadeIn delay-400 max-w-md text-center">
-  <h4 class="text-xl font-semibold text-green-500">Pago Contra Entrega</h4>
-  <p class="text-white mt-2">Recibe tu pedido en casa y paga cuando lo recibas.</p>
 
-  <!-- Animación del repartidor -->
-  <div class="mt-8 flex justify-center">
-    <lottie-player
-      src="https://lottie.host/5dc72e8a-ef8d-4d9f-8df9-01c52d83f734/FEX4WPRsHC.json"
-      background="transparent"
-      speed="1"
-      style="width: 250px; height: 250px;"
-      loop
-      autoplay
-    ></lottie-player>
-  </div>
-</div>
+      <!-- Recuadro de Contra Entrega -->
+      <div class="mt-8 p-4 bg-[#1b2a33] rounded-xl shadow-md border border-cyan-500/40 animate-fadeIn delay-400 max-w-md text-center">
+        <h4 class="text-xl font-semibold text-green-500">Pago Contra Entrega</h4>
+        <p class="text-white mt-2">Recibe tu pedido en casa y paga cuando lo recibas.</p>
 
-<!-- Script de Lottie -->
-<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+      </div>
 
-
+    </div>
   </div>
 </section>
 
 <style>
-.payment-logo {
-  width: 7rem;
-  height: auto;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-}
-.payment-logo:hover {
+  .payment-logo {
+    width: 7rem;
+    height: auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  .payment-logo:hover {
   transform: scale(1.15) rotate(-5deg);
   box-shadow: 0 0 20px 5px rgba(0, 255, 255, 0.6);
   animation: bounce 0.5s ease;
