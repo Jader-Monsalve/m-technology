@@ -23,9 +23,9 @@ import "../styles/global.css";
 
       <!-- Logos -->
       <div class="flex gap-8 flex-wrap justify-center">
-        <img src="/Bancolombia.svg" alt="Bancolombia" class="payment-logo" />
-        <img src="/Nequi.svg" alt="Nequi" class="payment-logo" />
-        <img src="/Efectivo.svg" alt="Efectivo" class="payment-logo" />
+        <img src="/Bancolombia.svg" alt="Bancolombia" class="payment-logo" data-method="bancolombia" />
+        <img src="/Nequi.svg" alt="Nequi" class="payment-logo" data-method="nequi" />
+        <img src="/Efectivo.svg" alt="Efectivo" class="payment-logo" data-method="efectivo" />
       </div>
 
       <!-- Recuadro de Contra Entrega -->
@@ -38,6 +38,27 @@ import "../styles/global.css";
     </div>
   </div>
 </section>
+
+<!-- Modal de método de pago (QR + cuenta) -->
+<div id="payment-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60">
+  <div class="bg-[#0f1724] max-w-lg w-full rounded-xl p-6 relative text-white shadow-xl mx-4">
+    <button id="payment-modal-close" class="absolute top-3 right-3 text-gray-300 hover:text-white">✕</button>
+    <h3 id="payment-modal-title" class="text-xl font-semibold mb-2">Método de pago</h3>
+    <p class="text-sm text-gray-300 mb-4">Consignaciones solo si te sientes seguro de comprar con nosotros. Cuando hagas la transferencia (total o adelanto), adjunta el comprobante en el formulario de contacto al enviar la información.</p>
+
+    <div class="flex flex-col md:flex-row items-center gap-4">
+      <img id="payment-modal-qr" src="/Payments/QR-Bancolombia.jpg" alt="QR" class="w-48 h-48 object-contain bg-white p-2 rounded-md" />
+      <div class="flex-1 text-left">
+        <p class="text-sm text-gray-300">Cuenta / Número:</p>
+        <p id="payment-modal-account" class="text-lg font-mono text-white my-2">---</p>
+        <div class="flex gap-2">
+          <button id="payment-copy" class="bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg px-3 py-2">Copiar número</button>
+          <a id="payment-open-bank" target="_blank" rel="noopener" class="bg-transparent border border-gray-600 text-gray-200 rounded-lg px-3 py-2 hover:border-cyan-500">Abrir app/banco</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <style>
   .payment-logo {
@@ -71,3 +92,73 @@ import "../styles/global.css";
   to { opacity: 1; transform: translateY(0); }
 }
 </style>
+<script>
+  // Datos de ejemplo: reemplazar por los reales si los tienes
+  const PAYMENT_DATA = {
+    bancolombia: {
+      title: 'Bancolombia',
+      account: 'Cuenta: 1234567890 - Ahorros (M-Technology)',
+      qr: '/Payments/QR-Bancolombia.jpg',
+      open: 'https://www.grupobancolombia.com'
+    },
+    nequi: {
+      title: 'Nequi',
+      account: 'Nequi: 3001112233 (M-Technology)',
+      qr: '/Payments/QR-Nequi.jpeg',
+      open: 'https://nequi.com'
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('payment-modal');
+    const qrImg = document.getElementById('payment-modal-qr');
+    const accountEl = document.getElementById('payment-modal-account');
+    const titleEl = document.getElementById('payment-modal-title');
+    const copyBtn = document.getElementById('payment-copy');
+    const openBtn = document.getElementById('payment-open-bank');
+    const closeBtn = document.getElementById('payment-modal-close');
+
+    document.querySelectorAll('.payment-logo[data-method]').forEach(img => {
+      img.addEventListener('click', () => {
+        const method = img.getAttribute('data-method');
+        if (!method) return;
+        const data = (PAYMENT_DATA as any)[method];
+        if (!data) return;
+        if (titleEl) titleEl.textContent = `Pagar con ${data.title}`;
+        if (qrImg) {
+          qrImg.setAttribute('src', data.qr);
+          qrImg.style.display = 'block';
+          qrImg.onerror = () => {
+            qrImg.style.display = 'none';
+            // si no carga la imagen, mostrar texto alternativo
+            if (accountEl) accountEl.textContent = data.account + ' (QR no disponible)';
+          };
+          qrImg.onload = () => {
+            // si carga, mostrar cuenta tal cual
+            if (accountEl) accountEl.textContent = data.account;
+          };
+        }
+        if (accountEl) accountEl.textContent = data.account;
+        if (openBtn) openBtn.setAttribute('href', data.open);
+        if (modal) modal.classList.remove('hidden');
+        if (modal) modal.classList.add('flex');
+      });
+    });
+
+    if (copyBtn) copyBtn.addEventListener('click', async () => {
+      const text = accountEl?.textContent || '';
+      try {
+        await navigator.clipboard.writeText(text || '');
+        copyBtn.textContent = 'Copiado';
+        setTimeout(() => (copyBtn.textContent = 'Copiar número'), 2000);
+      } catch (err) {
+        alert('No se pudo copiar automáticamente. Selecciona y copia manualmente.');
+      }
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', () => {
+      if (modal) modal.classList.add('hidden');
+      if (modal) modal.classList.remove('flex');
+    });
+  });
+</script>

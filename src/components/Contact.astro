@@ -86,6 +86,8 @@ const mapsQuery = encodeURIComponent(mapsAddress);
         ➕ Agregar otro producto
       </button>
 
+      <p id="total" class="text-lg font-bold text-white mt-4">Total: $0.00</p>
+
       <label class="flex flex-col gap-1">
         Forma de pago:
         <select
@@ -109,12 +111,25 @@ const mapsQuery = encodeURIComponent(mapsAddress);
         ></textarea>
       </label>
 
+      <label class="flex flex-col gap-1">
+        Adjuntar comprobante (opcional):
+        <input
+          type="file"
+          name="comprobante"
+          id="comprobante"
+          accept="image/*"
+          class="rounded-lg p-2 bg-[#22223b]/10 text-white text-base outline-none"
+        />
+        <div id="comprobante-preview" class="text-gray-300 text-sm mt-2"></div>
+      </label>
+
       <button
         type="submit"
         class="bg-green-500 text-white rounded-lg p-3 font-bold cursor-pointer transition-colors hover:bg-green-600"
       >
         Enviar a WhatsApp
       </button>
+      <p id="upload-status" class="text-sm text-gray-300 mt-2"></p>
     </form>
   </div>
 </section>
@@ -124,21 +139,64 @@ const mapsQuery = encodeURIComponent(mapsAddress);
     const container = document.getElementById("productos-container");
     const btnAgregar = document.getElementById("agregar-producto");
     const form = document.getElementById("contactForm");
-    const phone = "+573019030729";
+
+    const precios = {
+      "Aipods Pro 2": 55,
+      "P9 Pro Max": 55,
+      "Smartwatch 10 Ultra 2-GS": 55,
+      "Cargador de Iphone": 55,
+    };
+
+    function calcularTotal() {
+      if (!container) return 0;
+
+      const productos = Array.from(container.querySelectorAll(".producto"));
+      let total = 0;
+
+      productos.forEach((p) => {
+        const selectEl = p.querySelector("select[name='producto[]']") as HTMLSelectElement | null;
+        const inputEl = p.querySelector("input[name='cantidad[]']") as HTMLInputElement | null;
+        const producto = selectEl?.value;
+        const cantidad = parseInt(inputEl?.value || "0", 10);
+
+        if (typeof producto === "string" && producto in precios) {
+          total += precios[producto as keyof typeof precios] * cantidad;
+        }
+      });
+
+      const totalElement = document.getElementById("total");
+      if (totalElement) {
+        totalElement.textContent = `Total: $${total.toFixed(2)}`;
+      }
+
+      return total;
+    }
 
     if (!container || !btnAgregar || !form) return;
 
-    //  Agregar nuevo producto
+    // listeners iniciales para selects e inputs ya presentes
+    container.querySelectorAll(".producto").forEach(p => {
+      const select = p.querySelector("select[name='producto[]']") as HTMLSelectElement | null;
+      const input = p.querySelector("input[name='cantidad[]']") as HTMLInputElement | null;
+      if (select) select.addEventListener("change", calcularTotal);
+      if (input) input.addEventListener("input", calcularTotal);
+    });
+
+    const comprobantePreview = document.getElementById('comprobante-preview');
+    const comprobanteInputInit = document.getElementById('comprobante') as HTMLInputElement | null;
+    if (comprobanteInputInit && comprobantePreview) {
+      comprobanteInputInit.addEventListener('change', () => {
+        const f = comprobanteInputInit.files && comprobanteInputInit.files.length ? comprobanteInputInit.files[0] : null;
+        comprobantePreview.textContent = f ? `Archivo: ${f.name}` : '';
+      });
+    }
+
     btnAgregar.addEventListener("click", () => {
       const div = document.createElement("div");
       div.className = "producto flex gap-2";
 
       div.innerHTML = `
-        <select
-          name="producto[]"
-          required
-          class="rounded-lg p-3 bg-[#22223b]/10 text-[#22223b] text-base outline-none flex-1"
-        >
+        <select name="producto[]" required class="rounded-lg p-3 bg-[#22223b]/10 text-[#22223b] text-base outline-none flex-1">
           <option value="">Selecciona tu producto</option>
           <option value="Aipods Pro 2">Airpods Pro 2</option>
           <option value="P9 Pro Max">P9 Pro Max</option>
@@ -146,65 +204,165 @@ const mapsQuery = encodeURIComponent(mapsAddress);
           <option value="Cargador de Iphone">Cargador de Iphone</option>
         </select>
 
-        <input
-          type="number"
-          name="cantidad[]"
-          min="1"
-          value="1"
-          required
-          class="w-24 rounded-lg p-3 bg-[#22223b]/10 text-white text-base outline-none"
-        />
+        <input type="number" name="cantidad[]" min="1" value="1" required class="w-24 rounded-lg p-3 bg-[#22223b]/10 text-white text-base outline-none" />
 
-        <button
-          type="button"
-          class="eliminar bg-red-500/80 hover:bg-red-600 text-white px-3 rounded-lg"
-        >
-          🗑️
-        </button>
+        <button type="button" class="eliminar bg-red-500/80 hover:bg-red-600 text-white px-3 rounded-lg">🗑️</button>
       `;
 
       container.appendChild(div);
+      calcularTotal();
 
-      //  Eliminar producto
       const btnEliminar = div.querySelector(".eliminar");
       if (btnEliminar) {
         btnEliminar.addEventListener("click", () => {
           div.remove();
+          calcularTotal();
         });
       }
+
+      const select = div.querySelector("select[name='producto[]']") as HTMLSelectElement | null;
+      const input = div.querySelector("input[name='cantidad[]']") as HTMLInputElement | null;
+      if (select) select.addEventListener("change", calcularTotal);
+      if (input) input.addEventListener("input", calcularTotal);
     });
-// Enviar formulario por WhatsApp
-form.addEventListener("submit", (e: Event) => {
-  e.preventDefault();
 
-  // Seleccionamos los campos con casting correcto
-  const name = (form.querySelector("[name='name']") as HTMLInputElement)?.value || "";
-  const location = (form.querySelector("[name='location']") as HTMLInputElement)?.value || "";
-  const payment = (form.querySelector("[name='payment']") as HTMLInputElement)?.value || "";
-  const message = (form.querySelector("[name='message']") as HTMLTextAreaElement)?.value || "";
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-  // Obtenemos los productos dinámicos
-  const productos = Array.from(form.querySelectorAll(".producto")).map((p) => {
-    const producto = (p.querySelector("select[name='producto[]']") as HTMLSelectElement)?.value || "";
-    const cantidad = (p.querySelector("input[name='cantidad[]']") as HTMLInputElement)?.value || "";
-    return `${producto} (x${cantidad})`;
-  });
+   const name = (form.querySelector("[name='name']") as HTMLInputElement).value;
+const location = (form.querySelector("[name='location']") as HTMLInputElement).value;
+const payment = (form.querySelector("[name='payment']") as HTMLSelectElement).value;
+const message = (form.querySelector("[name='message']") as HTMLTextAreaElement).value;
+    const comprobanteInput = form.querySelector("#comprobante") as HTMLInputElement | null;
+    const comprobanteFile = comprobanteInput?.files && comprobanteInput.files.length ? comprobanteInput.files[0] : null;
+    const uploadStatus = document.getElementById('upload-status');
 
-  const productsText = productos.join(", ");
+    // Configuración opcional de subida. Rellena cloudName y uploadPreset para activar subida a Cloudinary.
+    const UPLOAD_CONFIG = {
+      provider: 'cloudinary', // 'cloudinary' or '' to disable
+      cloudName: 'dhhs7htsz', // provided cloudName
+      uploadPreset: 'M-Technology' // provided unsigned upload preset name
+    };
 
-  // Asegúrate de tener el número en formato internacional (sin espacios ni símbolos)
-  const phone = "573019030729"; // <-- reemplázalo con tu número de WhatsApp
+    let comprobanteURL: string | null = null;
 
- const rawText = `Hola, soy ${name}.
+      const productos = Array.from(form.querySelectorAll(".producto")).map((p) => {
+      const producto = ((p.querySelector("select[name='producto[]']") as HTMLSelectElement) || { value: "" }).value;
+      const cantidad = ((p.querySelector("input[name='cantidad[]']") as HTMLInputElement) || { value: "1" }).value;
+
+        return `${producto} (x${cantidad})`;
+      });
+
+      const productsText = productos.join(", ");
+      const phone = "573019030729";
+
+      // Si hay comprobante y la config está presente, intentar subir a Cloudinary (unsigned)
+        const isImage = comprobanteFile ? comprobanteFile.type.startsWith('image/') : false;
+        if (comprobanteFile && !isImage) {
+          if (uploadStatus) uploadStatus.textContent = 'Solo se permiten imágenes para que aparezcan en la vista previa de WhatsApp.';
+        }
+
+        if (UPLOAD_CONFIG.provider === 'cloudinary' && UPLOAD_CONFIG.cloudName && UPLOAD_CONFIG.uploadPreset && comprobanteFile) {
+          try {
+            if (uploadStatus) uploadStatus.textContent = 'Preparando comprobante...';
+
+            // Si es PDF: convertir primera página a imagen usando pdf.js
+            let imageBlob: Blob | null = null;
+            let pdfUploadUrl: string | null = null;
+
+            if (!isImage && comprobanteFile.type === 'application/pdf') {
+              // cargar pdf.js dinámicamente
+              await new Promise<void>((resolve, reject) => {
+                if ((window as any).pdfjsLib) return resolve();
+                const s = document.createElement('script');
+                s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js';
+                s.onload = () => resolve();
+                s.onerror = () => reject(new Error('No se pudo cargar pdf.js'));
+                document.head.appendChild(s);
+              });
+
+              const pdfjsLib = (window as any).pdfjsLib;
+              // establecer worker
+              if (pdfjsLib && pdfjsLib.GlobalWorkerOptions) {
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.worker.min.js';
+              }
+
+              const arrayBuffer = await comprobanteFile.arrayBuffer();
+              const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+              const pdf = await loadingTask.promise;
+              const page = await pdf.getPage(1);
+              const scale = 2;
+              const viewport = page.getViewport({ scale });
+              const canvas = document.createElement('canvas');
+              canvas.width = viewport.width;
+              canvas.height = viewport.height;
+              const ctx = canvas.getContext('2d');
+              if (ctx) {
+                const renderTask = page.render({ canvasContext: ctx, viewport });
+                await renderTask.promise;
+                imageBlob = await new Promise<Blob | null>((res) => canvas.toBlob(b => res(b), 'image/jpeg', 0.8));
+              }
+            }
+
+            // Si ya es imagen, usamos el propio file como imageBlob
+            if (isImage) imageBlob = comprobanteFile;
+
+            // Subir imagen (thumbnail o misma imagen)
+            if (imageBlob) {
+              if (uploadStatus) uploadStatus.textContent = 'Subiendo miniatura del comprobante...';
+              const fdImg = new FormData();
+              fdImg.append('file', imageBlob, 'comprobante.jpg');
+              fdImg.append('upload_preset', UPLOAD_CONFIG.uploadPreset);
+              const respImg = await fetch(`https://api.cloudinary.com/v1_1/${UPLOAD_CONFIG.cloudName}/auto/upload`, { method: 'POST', body: fdImg });
+              const jsonImg = await respImg.json();
+              if (jsonImg && jsonImg.secure_url) {
+                comprobanteURL = jsonImg.secure_url;
+                if (uploadStatus) uploadStatus.textContent = 'Miniatura subida.';
+              }
+            }
+
+            // No subimos el PDF original: solo usamos la miniatura generada para la vista previa en WhatsApp.
+
+            if (comprobanteURL) {
+              if (uploadStatus) uploadStatus.textContent = 'Comprobante subido.';
+            } else {
+              if (uploadStatus) uploadStatus.textContent = 'No se pudo subir el comprobante; se enviará el nombre de archivo.';
+            }
+
+            // No subiremos el PDF original; solo la miniatura (comprobanteURL) se usará en el mensaje.
+
+          } catch (err) {
+            console.error(err);
+            if (uploadStatus) uploadStatus.textContent = 'Error subiendo comprobante; adjunta manualmente en el chat.';
+          }
+        }
+
+      let comprobanteText = "No adjunta comprobante";
+      // Si tenemos URL pública y es imagen, dejarla en su propia línea para favorecer preview en WhatsApp
+      if (comprobanteURL) {
+        comprobanteText = `Imagen comprobante:\n${comprobanteURL}`;
+        // solo usamos la miniatura para la vista previa
+      } else if (comprobanteFile) {
+        comprobanteText = `Comprobante adjuntado: ${comprobanteFile.name} (adjuntar manualmente en el chat)`;
+        if (UPLOAD_CONFIG.provider !== 'cloudinary' || !UPLOAD_CONFIG.cloudName || !UPLOAD_CONFIG.uploadPreset) {
+          if (uploadStatus) uploadStatus.textContent = 'Para que la imagen aparezca automáticamente en el chat, configura una subida (Cloudinary) en el código.';
+        }
+      }
+
+      const rawText = `Hola, soy ${name}.
 Ubicación: ${location}
 Productos: ${productsText}
+Total: $${calcularTotal().toFixed(2)}
 Forma de pago: ${payment}
-Mensaje adicional: ${message}`;
+Mensaje adicional: ${message}
+${comprobanteText}`;
 
-const text = encodeURIComponent(rawText);
-const url = `https://wa.me/${phone.replace(/\D/g, "")}?text=${text}`;
-  window.open(url, "_blank");
-});
+      const text = encodeURIComponent(rawText);
+      const url = `https://wa.me/${phone.replace(/\D/g, "")}?text=${text}`;
+      window.open(url, "_blank");
+    });
+
+    // Recalcular total al cargar
+    calcularTotal();
   });
-
 </script>
