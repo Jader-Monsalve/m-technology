@@ -120,7 +120,10 @@ const mapsQuery = encodeURIComponent(mapsAddress);
           accept="image/*"
           class="rounded-lg p-2 bg-[#22223b]/10 text-white text-base outline-none"
         />
-        <div id="comprobante-preview" class="text-gray-300 text-sm mt-2"></div>
+        <div id="comprobante-preview" class="text-gray-300 text-sm mt-2">
+          <img id="comprobante-preview-img" src="" alt="preview" class="hidden max-w-xs max-h-40 rounded-md shadow-md" />
+          <div id="comprobante-preview-name" class="text-gray-300 text-sm mt-2"></div>
+        </div>
       </label>
 
       <button
@@ -134,8 +137,30 @@ const mapsQuery = encodeURIComponent(mapsAddress);
   </div>
 </section>
 
+<!-- Overlay de subida / spinner -->
+<div id="upload-overlay" role="dialog" aria-modal="true" aria-live="polite" class="hidden fixed inset-0 z-50 items-center justify-center bg-black/60">
+  <div class="flex flex-col items-center gap-4 bg-transparent p-4 rounded">
+    <div class="w-16 h-16 border-4 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true"></div>
+    <img id="upload-overlay-preview" src="" alt="miniatura comprobante" class="hidden max-w-xs max-h-40 rounded-md shadow-md" />
+    <p id="upload-overlay-text" class="text-white text-sm">Procesando comprobante, espera...</p>
+    <div class="pt-2">
+      <button id="upload-cancel" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Ocultar el botón Cancelar en dispositivos con puntero fino (PC) */
+  @media (pointer: fine) {
+    #upload-cancel { display: none; }
+  }
+</style>
+
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+    let activeAbortController: AbortController | null = null;
+    let activeNewWin: Window | null = null;
+    let submitAborted = false;
     const container = document.getElementById("productos-container");
     const btnAgregar = document.getElementById("agregar-producto");
     const form = document.getElementById("contactForm");
@@ -184,10 +209,39 @@ const mapsQuery = encodeURIComponent(mapsAddress);
 
     const comprobantePreview = document.getElementById('comprobante-preview');
     const comprobanteInputInit = document.getElementById('comprobante') as HTMLInputElement | null;
+    const comprobantePreviewImg = document.getElementById('comprobante-preview-img') as HTMLImageElement | null;
+    const comprobantePreviewName = document.getElementById('comprobante-preview-name') as HTMLDivElement | null;
+    const overlayPreviewImg = document.getElementById('upload-overlay-preview') as HTMLImageElement | null;
     if (comprobanteInputInit && comprobantePreview) {
+      let currentObjectUrl: string | null = null;
       comprobanteInputInit.addEventListener('change', () => {
         const f = comprobanteInputInit.files && comprobanteInputInit.files.length ? comprobanteInputInit.files[0] : null;
-        comprobantePreview.textContent = f ? `Archivo: ${f.name}` : '';
+        // limpiar previa anterior
+        if (currentObjectUrl) {
+          URL.revokeObjectURL(currentObjectUrl);
+          currentObjectUrl = null;
+        }
+        if (!f) {
+          if (comprobantePreviewImg) { comprobantePreviewImg.src = ''; comprobantePreviewImg.classList.add('hidden'); }
+          if (comprobantePreviewName) comprobantePreviewName.textContent = '';
+          return;
+        }
+
+        if (f.type.startsWith('image/')) {
+          const url = URL.createObjectURL(f);
+          currentObjectUrl = url;
+          if (comprobantePreviewImg) { comprobantePreviewImg.src = url; comprobantePreviewImg.classList.remove('hidden'); }
+          if (comprobantePreviewName) comprobantePreviewName.textContent = f.name;
+          // show in overlay too
+          if (overlayPreviewImg) { overlayPreviewImg.src = url; overlayPreviewImg.classList.remove('hidden'); }
+        } else if (f.type === 'application/pdf') {
+          if (comprobantePreviewImg) { comprobantePreviewImg.src = ''; comprobantePreviewImg.classList.add('hidden'); }
+          if (comprobantePreviewName) comprobantePreviewName.textContent = `PDF: ${f.name}`;
+          if (overlayPreviewImg) { overlayPreviewImg.src = ''; overlayPreviewImg.classList.add('hidden'); }
+        } else {
+          if (comprobantePreviewImg) { comprobantePreviewImg.src = ''; comprobantePreviewImg.classList.add('hidden'); }
+          if (comprobantePreviewName) comprobantePreviewName.textContent = `Archivo: ${f.name}`;
+        }
       });
     }
 
@@ -228,6 +282,21 @@ const mapsQuery = encodeURIComponent(mapsAddress);
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
+      const submitBtn = form.querySelector("button[type='submit']") as HTMLButtonElement | null;
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.classList.add('opacity-60', 'cursor-not-allowed'); }
+      // Abrir una ventana en la misma interacción de usuario para evitar bloqueos en móviles
+      let newWin: Window | null = null;
+      try {
+        newWin = window.open('', '_blank');
+      } catch (err) {
+        newWin = null;
+      }
+      // store references for cancellation
+      activeNewWin = newWin;
+      submitAborted = false;
+      const overlay = document.getElementById('upload-overlay');
+      const overlayText = document.getElementById('upload-overlay-text');
+      if (overlay) overlay.classList.remove('hidden'), overlay.classList.add('flex');
 
    const name = (form.querySelector("[name='name']") as HTMLInputElement).value;
 const location = (form.querySelector("[name='location']") as HTMLInputElement).value;
@@ -265,6 +334,7 @@ const message = (form.querySelector("[name='message']") as HTMLTextAreaElement).
         if (UPLOAD_CONFIG.provider === 'cloudinary' && UPLOAD_CONFIG.cloudName && UPLOAD_CONFIG.uploadPreset && comprobanteFile) {
           try {
             if (uploadStatus) uploadStatus.textContent = 'Preparando comprobante...';
+            if (overlayText) overlayText.textContent = 'Preparando comprobante...';
 
             // Si es PDF: convertir primera página a imagen usando pdf.js
             let imageBlob: Blob | null = null;
@@ -300,7 +370,18 @@ const message = (form.querySelector("[name='message']") as HTMLTextAreaElement).
               if (ctx) {
                 const renderTask = page.render({ canvasContext: ctx, viewport });
                 await renderTask.promise;
-                imageBlob = await new Promise<Blob | null>((res) => canvas.toBlob(b => res(b), 'image/jpeg', 0.8));
+                const blob = await new Promise<Blob | null>((res) => canvas.toBlob(b => res(b), 'image/jpeg', 0.8));
+                imageBlob = blob;
+                // show overlay preview from the generated blob
+                if (blob && overlayPreviewImg) {
+                  try {
+                    const obj = URL.createObjectURL(blob);
+                    overlayPreviewImg.src = obj;
+                    overlayPreviewImg.classList.remove('hidden');
+                    // revoke later after short delay when redirecting
+                    setTimeout(() => URL.revokeObjectURL(obj), 5000);
+                  } catch (e) { /* ignore */ }
+                }
               }
             }
 
@@ -310,30 +391,51 @@ const message = (form.querySelector("[name='message']") as HTMLTextAreaElement).
             // Subir imagen (thumbnail o misma imagen)
             if (imageBlob) {
               if (uploadStatus) uploadStatus.textContent = 'Subiendo miniatura del comprobante...';
+              if (overlayText) overlayText.textContent = 'Subiendo comprobante...';
               const fdImg = new FormData();
               fdImg.append('file', imageBlob, 'comprobante.jpg');
               fdImg.append('upload_preset', UPLOAD_CONFIG.uploadPreset);
-              const respImg = await fetch(`https://api.cloudinary.com/v1_1/${UPLOAD_CONFIG.cloudName}/auto/upload`, { method: 'POST', body: fdImg });
+              // Usar AbortController para poder cancelar la subida
+              activeAbortController = new AbortController();
+              const respImg = await fetch(`https://api.cloudinary.com/v1_1/${UPLOAD_CONFIG.cloudName}/auto/upload`, { method: 'POST', body: fdImg, signal: activeAbortController.signal });
               const jsonImg = await respImg.json();
-              if (jsonImg && jsonImg.secure_url) {
-                comprobanteURL = jsonImg.secure_url;
-                if (uploadStatus) uploadStatus.textContent = 'Miniatura subida.';
-              }
+                if (jsonImg && jsonImg.secure_url) {
+                  comprobanteURL = jsonImg.secure_url;
+                  if (uploadStatus) uploadStatus.textContent = 'Miniatura subida.';
+                  if (overlayText) overlayText.textContent = 'Miniatura subida.';
+                }
+                  // if imageBlob came from a local image file preview, keep overlay preview as-is; otherwise if we have comprobanteURL, set overlay preview to that URL
+                  if (comprobanteURL && overlayPreviewImg) {
+                    overlayPreviewImg.src = comprobanteURL;
+                    overlayPreviewImg.classList.remove('hidden');
+                  }
             }
 
             // No subimos el PDF original: solo usamos la miniatura generada para la vista previa en WhatsApp.
 
             if (comprobanteURL) {
               if (uploadStatus) uploadStatus.textContent = 'Comprobante subido.';
+              if (overlayText) overlayText.textContent = 'Subida completa. Abriendo WhatsApp...';
             } else {
               if (uploadStatus) uploadStatus.textContent = 'No se pudo subir el comprobante; se enviará el nombre de archivo.';
+              if (overlayText) overlayText.textContent = 'No se pudo subir el comprobante. Abriendo WhatsApp...';
             }
 
             // No subiremos el PDF original; solo la miniatura (comprobanteURL) se usará en el mensaje.
 
           } catch (err) {
             console.error(err);
-            if (uploadStatus) uploadStatus.textContent = 'Error subiendo comprobante; adjunta manualmente en el chat.';
+            if (err && (err as any).name === 'AbortError') {
+              // usuario canceló
+              submitAborted = true;
+              if (uploadStatus) uploadStatus.textContent = 'Subida cancelada.';
+              if (overlayText) overlayText.textContent = 'Subida cancelada.';
+            } else {
+              if (uploadStatus) uploadStatus.textContent = 'Error subiendo comprobante; adjunta manualmente en el chat.';
+              if (overlayText) overlayText.textContent = 'Error subiendo comprobante. Abriendo WhatsApp...';
+            }
+          } finally {
+            activeAbortController = null;
           }
         }
 
@@ -359,8 +461,64 @@ ${comprobanteText}`;
 
       const text = encodeURIComponent(rawText);
       const url = `https://wa.me/${phone.replace(/\D/g, "")}?text=${text}`;
-      window.open(url, "_blank");
+      // Si el submit fue abortado por el usuario, cerrar la ventana abierta y ocultar overlay
+      if (submitAborted) {
+        if (activeNewWin && !activeNewWin.closed) {
+          try { activeNewWin.close(); } catch (e) { /* ignore */ }
+        }
+        if (overlay) overlay.classList.remove('flex'), overlay.classList.add('hidden');
+        // limpiar previews
+        if (comprobantePreviewImg) { comprobantePreviewImg.src = ''; comprobantePreviewImg.classList.add('hidden'); }
+        if (comprobantePreviewName) comprobantePreviewName.textContent = '';
+        if (overlayPreviewImg) { overlayPreviewImg.src = ''; overlayPreviewImg.classList.add('hidden'); }
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.classList.remove('opacity-60', 'cursor-not-allowed'); }
+        activeNewWin = null;
+        return;
+      }
+
+      // Redirigir la ventana abierta inicialmente (fallback a navegar la misma pestaña si no se pudo abrir)
+      try {
+        if (newWin) {
+          newWin.location.href = url;
+          // dejamos el overlay visible unos instantes para indicar proceso; la nueva ventana tomará el foco
+          setTimeout(() => {
+            if (overlay) overlay.classList.remove('flex'), overlay.classList.add('hidden');
+          }, 1500);
+        } else {
+          window.location.href = url;
+        }
+      } catch (err) {
+        // En algunos navegadores asignar location puede fallar; usar fallback
+        window.location.href = url;
+      } finally {
+        activeNewWin = null;
+      }
     });
+
+    // Handler del botón cancelar
+    const cancelBtn = document.getElementById('upload-cancel');
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', () => {
+        // marcar abortado
+        submitAborted = true;
+        if (activeAbortController) {
+          try { activeAbortController.abort(); } catch (e) { /* ignore */ }
+          activeAbortController = null;
+        }
+        // cerrar ventana si existe
+        if (activeNewWin && !activeNewWin.closed) {
+          try { activeNewWin.close(); } catch (e) { /* ignore */ }
+        }
+        // ocultar overlay
+        const overlay = document.getElementById('upload-overlay');
+        if (overlay) overlay.classList.remove('flex'), overlay.classList.add('hidden');
+        const uploadStatus = document.getElementById('upload-status');
+        if (uploadStatus) uploadStatus.textContent = 'Carga cancelada por el usuario.';
+        // reactivar boton enviar
+        const submitBtn = form.querySelector("button[type='submit']") as HTMLButtonElement | null;
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.classList.remove('opacity-60', 'cursor-not-allowed'); }
+      });
+    }
 
     // Recalcular total al cargar
     calcularTotal();
