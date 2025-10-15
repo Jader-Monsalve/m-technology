@@ -29,15 +29,10 @@ import "../styles/global.css";
           data-method="bancolombia"
           aria-describedby="payment-hint"
           aria-label="Pagar con Bancolombia"
-          style="width: max(4.5rem, 18vw);"
-          onmouseenter="document.getElementById('payment-hint').textContent = 'Haz clic para transferir con Bancolombia: verás QR y número de cuenta.'"
-          onmouseleave="document.getElementById('payment-hint').textContent = 'Haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.'"
-          onfocus="document.getElementById('payment-hint').textContent = 'Haz clic para transferir con Bancolombia: verás QR y número de cuenta.'"
-          onblur="document.getElementById('payment-hint').textContent = 'Haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.'"
-          ontouchstart="document.getElementById('payment-hint').textContent = 'Toca para transferir con Bancolombia: verás QR y número de cuenta.'"
+          
         >
           <img src="/Bancolombia.svg" alt="Bancolombia" class="w-full h-auto" />
-          <span class="text-xs text-gray-300 mt-2">Bancolombia</span>
+          <span class="text-sm text-gray-300 mt-2">Bancolombia</span>
         </button>
 
         <button
@@ -46,15 +41,10 @@ import "../styles/global.css";
           data-method="nequi"
           aria-describedby="payment-hint"
           aria-label="Pagar con Nequi"
-          style="width: max(4.5rem, 18vw);"
-          onmouseenter="document.getElementById('payment-hint').textContent = 'Haz clic para transferir con Nequi: verás QR y número de cuenta.'"
-          onmouseleave="document.getElementById('payment-hint').textContent = 'Haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.'"
-          onfocus="document.getElementById('payment-hint').textContent = 'Haz clic para transferir con Nequi: verás QR y número de cuenta.'"
-          onblur="document.getElementById('payment-hint').textContent = 'Haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.'"
-          ontouchstart="document.getElementById('payment-hint').textContent = 'Toca para transferir con Nequi: verás QR y número de cuenta.'"
+          
         >
           <img src="/Nequi.svg" alt="Nequi" class="w-full h-auto" />
-          <span class="text-xs text-gray-300 mt-2">Nequi</span>
+          <span class="text-sm text-gray-300 mt-2">Nequi</span>
         </button>
 
         <button
@@ -62,16 +52,10 @@ import "../styles/global.css";
           class="payment-logo flex flex-col items-center p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400"
           aria-describedby="payment-hint"
           aria-label="Pago contra entrega"
-          style="width: max(4.5rem, 18vw);"
-          onmouseenter="document.getElementById('payment-hint').textContent = 'Pago contra entrega: no requiere transferencia.'"
-          onmouseleave="document.getElementById('payment-hint').textContent = 'Haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.'"
-          onfocus="document.getElementById('payment-hint').textContent = 'Pago contra entrega: no requiere transferencia.'"
-          onblur="document.getElementById('payment-hint').textContent = 'Haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.'"
-          ontouchstart="document.getElementById('payment-hint').textContent = 'Pago contra entrega: no requiere transferencia.'"
-          onclick="document.getElementById('payment-hint').textContent = 'Has seleccionado Pago contra entrega — no es necesaria una transferencia.'"
+          
         >
           <img src="/Efectivo.svg" alt="Efectivo" class="w-full h-auto" />
-          <span class="text-xs text-gray-300 mt-2">Contra entrega</span>
+          <span class="text-sm text-gray-300 mt-2">Contra entrega</span>
         </button>
       </div>
 
@@ -112,17 +96,53 @@ import "../styles/global.css";
 </div>
 
 <style>
+  /* Responsive sizes: más grandes en móviles, más proporcionados en pantallas grandes */
   .payment-logo {
-    width: 7rem;
+    width: 9rem; /* móvil por defecto — más visible en pantallas pequeñas */
     height: auto;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
-  .payment-logo:hover {
-  transform: scale(1.15);
-  box-shadow: 0 0 20px 5px rgba(0, 255, 255, 0.6);
-  animation: bounce 0.5s ease;
-}
+
+  /* Etiqueta dentro del logo ligeramente mayor en móvil */
+  .payment-logo span { font-size: 0.9rem; }
+
+  /* Punto intermedio (tablets / pantallas medianas): ligeramente más pequeño que móvil pero aún visible */
+  @media (min-width: 768px) {
+    .payment-logo { width: 8rem; }
+    .payment-logo span { font-size: 0.95rem; }
+  }
+
+  /* Pantallas grandes (PC): reducir un poco respecto a móvil para mantener balance visual */
+  @media (min-width: 1024px) {
+    .payment-logo { width: 7rem; }
+    .payment-logo span { font-size: 0.9rem; }
+  }
+
+  /* Hover y animación solo en dispositivos con puntero fino (PC) */
+  @media (hover: hover) and (pointer: fine) {
+    .payment-logo:hover {
+      transform: scale(1.15);
+      box-shadow: 0 0 20px 5px rgba(0, 255, 255, 0.6);
+      animation: bounce 0.5s ease;
+    }
+  }
+
+  /* Para dispositivos táctiles: feedback por acción (touch) sin bounce */
+  @media (pointer: coarse) {
+    .payment-logo { transition-duration: 0.12s; }
+    .payment-logo:active {
+      transform: scale(1.08);
+      box-shadow: none;
+      animation: none;
+    }
+  }
+
+  /* Asegurar que la imagen ocupe el contenedor sin distorsionar */
+  .payment-logo img { max-width: 100%; height: auto; display: block; }
 
 /* Bounce */
 @keyframes bounce {
@@ -194,6 +214,45 @@ import "../styles/global.css";
         if (modal) modal.classList.remove('hidden');
         if (modal) modal.classList.add('flex');
       });
+    });
+
+    // --- Nuevo: comportamiento de hint según dispositivo (touch vs pointer:fine)
+    const hintEl = document.getElementById('payment-hint');
+    const supportsCoarse = (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) || ('ontouchstart' in window);
+
+    document.querySelectorAll('.payment-logo').forEach(btn => {
+      const method = btn.getAttribute('data-method');
+      if (supportsCoarse) {
+        // dispositivos táctiles: sólo mostrar mensaje corto al tocar
+        btn.addEventListener('touchstart', () => {
+          if (!hintEl) return;
+          if (method === 'bancolombia') hintEl.textContent = 'Toca para transferir con Bancolombia: verás QR y número de cuenta.';
+          else if (method === 'nequi') hintEl.textContent = 'Toca para transferir con Nequi: verás QR y número de cuenta.';
+          else hintEl.textContent = 'Toca para ver opciones de pago.';
+        }, { passive: true });
+      } else {
+        // PC: comportamiento completo con enter/leave
+        btn.addEventListener('mouseenter', () => {
+          if (!hintEl) return;
+          if (method === 'bancolombia') hintEl.textContent = 'Haz clic para transferir con Bancolombia: verás QR y número de cuenta.';
+          else if (method === 'nequi') hintEl.textContent = 'Haz clic para transferir con Nequi: verás QR y número de cuenta.';
+          else hintEl.textContent = 'Pago contra entrega: no requiere transferencia.';
+        });
+        btn.addEventListener('mouseleave', () => {
+          if (!hintEl) return;
+          hintEl.textContent = 'Haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.';
+        });
+        btn.addEventListener('focus', () => {
+          if (!hintEl) return;
+          if (method === 'bancolombia') hintEl.textContent = 'Haz clic para transferir con Bancolombia: verás QR y número de cuenta.';
+          else if (method === 'nequi') hintEl.textContent = 'Haz clic para transferir con Nequi: verás QR y número de cuenta.';
+          else hintEl.textContent = 'Pago contra entrega: no requiere transferencia.';
+        });
+        btn.addEventListener('blur', () => {
+          if (!hintEl) return;
+          hintEl.textContent = 'Haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.';
+        });
+      }
     });
 
     if (copyBtn) copyBtn.addEventListener('click', async () => {
