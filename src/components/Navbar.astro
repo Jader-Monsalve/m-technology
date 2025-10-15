@@ -34,12 +34,48 @@ import "../styles/global.css";
   </div>
 
   <!-- JS para toggle -->
-  <script type="module">
-    const toggleButton = document.getElementById('menu-toggle');
-    const menu = document.getElementById('navbar-search');
+ <script type="module">
+  const toggleButton = document.getElementById('menu-toggle');
+  const menu = document.getElementById('navbar-search');
 
-    toggleButton.addEventListener('click', () => {
-      menu.classList.toggle('hidden');
-    });
-  </script>
+  toggleButton.addEventListener('click', (event) => {
+    event.stopPropagation();
+    menu.classList.toggle('hidden');
+
+    // Detectar si estamos en modo móvil (md:hidden visible solo en móviles)
+    if (window.innerWidth < 768) {
+      document.body.classList.toggle('mobile-menu-open', !menu.classList.contains('hidden'));
+    }
+  });
+
+  menu.addEventListener('click', (event) => {
+    event.stopPropagation();
+  });
+
+  document.addEventListener('click', () => {
+    if (!menu.classList.contains('hidden')) {
+      menu.classList.add('hidden');
+
+      // Remover overlay en móviles
+      if (window.innerWidth < 768) {
+        document.body.classList.remove('mobile-menu-open');
+      }
+    }
+  });
+</script>
 </nav>
+
+<style> 
+@media (max-width: 767px) {
+  body.mobile-menu-open::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+    z-index: 40; /* Debajo del menú que tiene z-50 */
+  }
+}
+</style>

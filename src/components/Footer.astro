@@ -1,74 +1,56 @@
 ---
-const socialLinks = [
-    { name: 'GitHub', url: 'https://github.com/', svg: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="32" height="32"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.34-1.3-1.7-1.3-1.7-1.06-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.04 1.78 2.73 1.27 3.4.97.11-.75.41-1.27.74-1.56-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 2.9-.39c.98 0 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.41-5.25 5.7.42.36.79 1.08.79 2.18 0 1.57-.01 2.84-.01 3.23 0 .31.21.67.8.56C20.71 21.39 24 17.08 24 12c0-6.27-5.23-11.5-12-11.5z"/></svg>` },
-    { name: 'Twitter', url: 'https://twitter.com/', svg: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="32" height="32"><path d="M24 4.56c-.89.39-1.84.65-2.84.77a4.93 4.93 0 0 0 2.16-2.72c-.95.56-2 .97-3.13 1.19A4.92 4.92 0 0 0 16.62 3c-2.73 0-4.94 2.21-4.94 4.94 0 .39.04.77.12 1.13C7.69 8.86 4.07 7.13 1.64 4.16c-.43.74-.68 1.6-.68 2.52 0 1.74.89 3.27 2.25 4.17-.83-.03-1.61-.25-2.29-.63v.06c0 2.43 1.73 4.46 4.03 4.92-.42.12-.87.18-1.33.18-.32 0-.63-.03-.93-.09.63 1.97 2.45 3.4 4.6 3.44A9.9 9.9 0 0 1 0 21.54a13.94 13.94 0 0 0 7.56 2.22c9.05 0 14-7.5 14-14 0-.21 0-.42-.02-.63A9.94 9.94 0 0 0 24 4.56z"/></svg>` },
-    { name: 'LinkedIn', url: 'https://linkedin.com/', svg: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="32" height="32"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.76s.78-1.76 1.75-1.76 1.75.79 1.75 1.76-.78 1.76-1.75 1.76zm13.5 11.27h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.89v1.36h.04c.4-.75 1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 4.59v5.59z"/></svg>` },
-];
 ---
 
-<footer class="w-full py-8 flex flex-col items-center bg-transparent">
-  <div class="flex gap-8">
-    {socialLinks.map(link => (
-      <a
-        href={link.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="text-white text-2xl transition-all duration-200 rounded-full p-2 bg-black/20 hover:text-blue-500 hover:scale-110"
-        aria-label={link.name}
-        set:html={link.svg}
-      />
-    ))}
-  </div>
-  <div class="mt-6 text-center text-sm text-gray-400">
-    © {new Date().getFullYear()} M-Technology. Todos los derechos reservados. <br />
-    <a href="#" id="condiciones-link" class="underline hover:text-blue-400">Condiciones de uso</a>
-  </div>
-
-<div id="modal-condiciones" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 hidden">
-    <div class="bg-white/90 rounded-lg p-8 max-w-lg w-full relative">
-        <button id="close-modal" class="absolute top-2 right-2 text-gray-600 hover:text-red-500 text-2xl">&times;</button>
-        <h2 class="text-xl font-bold mb-4">Condiciones de uso</h2>
-        <div class="text-gray-700 text-sm max-h-96 overflow-y-auto">
-            <p><strong>1. Aceptacion de las condiciones</strong><br />
-            Al acceder y utilizar este sitio web de M-Technology, usted acepta cumplir con estas condiciones de uso y todas las leyes y regulaciones aplicables.</p>
-            <br />
-            <p><strong>2. Propiedad intelectual</strong><br />
-            Todo el contenido, logotipos, graficos y software en este sitio son propiedad de M-Technology o de sus licenciantes y estan protegidos por las leyes de derechos de autor y propiedad intelectual.</p>
-            <br />
-            <p><strong>3. Uso permitido</strong><br />
-            Usted puede navegar y utilizar este sitio solo para fines personales y no comerciales. No esta permitido copiar, modificar, distribuir o reproducir ningun contenido sin autorizacion previa por escrito de M-Technology.</p>
-            <br />
-            <p><strong>4. Limitacion de responsabilidad</strong><br />
-            M-Technology no se hace responsable de danos directos o indirectos derivados del uso o imposibilidad de uso de este sitio web.</p>
-            <br />
-            <p><strong>5. Enlaces a terceros</strong><br />
-            Este sitio puede contener enlaces a sitios de terceros. M-Technology no se responsabiliza por el contenido o politicas de privacidad de dichos sitios.</p>
-            <br />
-            <p><strong>6. Modificaciones</strong><br />
-            M-Technology se reserva el derecho de modificar estas condiciones en cualquier momento. Las modificaciones seran efectivas una vez publicadas en el sitio.</p>
-            <br />
-            <p><strong>7. Ley aplicable</strong><br />
-            Estas condiciones se rigen por las leyes aplicables en la jurisdiccion donde opera M-Technology.</p>
-            <br />
-            <p>Si tiene preguntas sobre estas condiciones, contactenos a traves de nuestros canales oficiales.</p>
-        </div>
+<footer class="bg-[#1b2a33] text-gray-300 py-12 border-t border-cyan-500/20">
+  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
+    <!-- Columna 1: Logo y descripción -->
+    <div>
+      <h2 class="text-2xl font-bold text-green-600  mb-3">M-Technology</h2>
+      <p class="text-sm text-gray-400 leading-relaxed">
+        Innovación, tecnología y diseño al alcance de todos. Conoce nuestros productos más recientes y aprende a cuidarlos correctamente.
+      </p>
     </div>
-</div>
 
-  <script type="module" is:inline>
-    const link = document.getElementById('condiciones-link');
-    const modal = document.getElementById('modal-condiciones');
-    const close = document.getElementById('close-modal');
-    link?.addEventListener('click', (e) => {
-      e.preventDefault();
-      modal.classList.remove('hidden');
-    });
-    close?.addEventListener('click', () => {
-      modal.classList.add('hidden');
-    });
-    // Cierra el modal al hacer click fuera del contenido
-    modal?.addEventListener('click', (e) => {
-      if (e.target === modal) modal.classList.add('hidden');
-    });
-  </script>
-</footer>
+    <!-- Columna 2: Enlaces -->
+    <div>
+      <h3 class="text-lg font-semibold text-white mb-4">Enlaces</h3>
+      <ul class="space-y-2">
+        <li><a href="#Products" class="hover:text-green-600 transition-colors">Productos</a></li>
+        <li><a href="#Care" class="hover:text-green-600  transition-colors">Cuidados</a></li>
+        <li><a href="#Payments" class="hover:text-green-600 transition-colors">Métodos de pago</a></li>
+      </ul>
+    </div>
+
+    <!-- Columna 3: Contacto -->
+    <div>
+      <h3 class="text-lg font-semibold text-white mb-4">Contáctanos</h3>
+      <ul class="space-y-3 text-sm">
+        <li class="flex items-center gap-2 group">
+          <img src="https://www.svgrepo.com/show/452213/gmail.svg" 
+               alt="Email" 
+               class="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110" />
+          <a href="mailto:info@m-technology.com" 
+             class="text-green-600  hover:underline transition-colors">info@m-technology.com</a>
+        </li>
+
+        <li class="flex items-center gap-2 group">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
+               alt="WhatsApp" 
+               class="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110" />
+          <a href="https://wa.me/3019030729" target="_blank" 
+             class="text-green-600 hover:underline transition-colors">+57 300 111 2233</a>
+        </li>
+
+        <li class="flex items-center gap-2 group">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" 
+               alt="Instagram" 
+               class="w-5 h-5 rounded transition-transform duration-300 group-hover:scale-110 group-hover:brightness-110" />
+          <a href="https://www.instagram.com/jm09___c0?igsh=MXNnMHI3d2d0NGJibw%3D%3D&utm_source=qr" 
+             class="text-green-600 hover:underline transition-colors">@mtechnology</a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+<!-- Línea inferior --> <div class="border-t border-gray-800 mt-6 pt-6 text-center text-xs text-gray-500"> © {new Date().getFullYear()} M-Technology. Todos los derechos reservados. <br /> <a href="#" id="condiciones-link" class="underline hover:text-green-600">Condiciones de uso</a> </div> <!-- Modal --> <div id="modal-condiciones" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 hidden"> <div class="bg-white/90 rounded-lg p-8 max-w-lg w-full relative text-gray-800"> <button id="close-modal" class="absolute top-2 right-2 text-gray-600 hover:text-green-600 text-2xl">&times;</button> <h2 class="text-xl font-bold mb-4">Condiciones de uso</h2> <div class="text-sm max-h-96 overflow-y-auto space-y-4"> <p><strong>1. Aceptación de las condiciones</strong><br />Al acceder y utilizar este sitio web de M-Technology, usted acepta cumplir con estas condiciones de uso y todas las leyes aplicables.</p> <p><strong>2. Propiedad intelectual</strong><br />Todo el contenido, logotipos y software en este sitio son propiedad de M-Technology o sus licenciantes.</p> <p><strong>3. Uso permitido</strong><br />Usted puede usar este sitio solo para fines personales y no comerciales.</p> <p><strong>4. Limitación de responsabilidad</strong><br />M-Technology no se hace responsable de daños derivados del uso o imposibilidad de uso de este sitio web.</p> <p><strong>5. Enlaces a terceros</strong><br />Este sitio puede contener enlaces a sitios externos. M-Technology no se responsabiliza por su contenido.</p> <p><strong>6. Modificaciones</strong><br />Podemos actualizar estas condiciones en cualquier momento.</p> <p><strong>7. Ley aplicable</strong><br />Estas condiciones se rigen por las leyes vigentes en Colombia.</p> </div> </div> </div> <script type="module" is:inline> const link = document.getElementById('condiciones-link'); const modal = document.getElementById('modal-condiciones'); const close = document.getElementById('close-modal'); link?.addEventListener('click', (e) => { e.preventDefault(); modal.classList.remove('hidden'); }); close?.addEventListener('click', () => { modal.classList.add('hidden'); }); modal?.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); }); </script> </footer> <!-- Modal de condiciones --> <dialog id="termsModal" class="rounded-xl bg-[#101010] text-gray-300 p-8 max-w-2xl backdrop:bg-black/50"> <h2 class="text-2xl font-bold text-green-600 mb-4">Condiciones de Uso</h2> <p class="text-sm leading-relaxed text-gray-400 mb-6"> Al acceder a nuestro blog interactivo aceptas los términos de uso, políticas de privacidad y propiedad intelectual de M-Technology. Toda la información aquí publicada tiene fines informativos y pertenece exclusivamente a la marca. </p> <button onclick="document.getElementById('termsModal').close()" class="px-4 py-2 bg-green-600 hover:bg-green-600 text-black rounded-lg font-medium transition"> Cerrar </button> </dialog>
