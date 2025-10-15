@@ -15,3 +15,8 @@ npm-debug.log
 
 yarn-error.log
 
+# Cypress
+cypress/
+cypress.config.*
+cypress.env.json
+
