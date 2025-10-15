@@ -22,11 +22,62 @@ import "../styles/global.css";
       </p>
 
       <!-- Logos -->
-      <div class="flex gap-8 flex-wrap justify-center">
-        <img src="/Bancolombia.svg" alt="Bancolombia" class="payment-logo" data-method="bancolombia" />
-        <img src="/Nequi.svg" alt="Nequi" class="payment-logo" data-method="nequi" />
-        <img src="/Efectivo.svg" alt="Efectivo" class="payment-logo" data-method="efectivo" />
+      <div class="flex gap-6 sm:gap-8 flex-wrap justify-center items-center">
+        <button
+          type="button"
+          class="payment-logo flex flex-col items-center p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400"
+          data-method="bancolombia"
+          aria-describedby="payment-hint"
+          aria-label="Pagar con Bancolombia"
+          style="width: max(4.5rem, 18vw);"
+          onmouseenter="document.getElementById('payment-hint').textContent = 'Haz clic para transferir con Bancolombia: verás QR y número de cuenta.'"
+          onmouseleave="document.getElementById('payment-hint').textContent = 'Haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.'"
+          onfocus="document.getElementById('payment-hint').textContent = 'Haz clic para transferir con Bancolombia: verás QR y número de cuenta.'"
+          onblur="document.getElementById('payment-hint').textContent = 'Haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.'"
+          ontouchstart="document.getElementById('payment-hint').textContent = 'Toca para transferir con Bancolombia: verás QR y número de cuenta.'"
+        >
+          <img src="/Bancolombia.svg" alt="Bancolombia" class="w-full h-auto" />
+          <span class="text-xs text-gray-300 mt-2">Bancolombia</span>
+        </button>
+
+        <button
+          type="button"
+          class="payment-logo flex flex-col items-center p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400"
+          data-method="nequi"
+          aria-describedby="payment-hint"
+          aria-label="Pagar con Nequi"
+          style="width: max(4.5rem, 18vw);"
+          onmouseenter="document.getElementById('payment-hint').textContent = 'Haz clic para transferir con Nequi: verás QR y número de cuenta.'"
+          onmouseleave="document.getElementById('payment-hint').textContent = 'Haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.'"
+          onfocus="document.getElementById('payment-hint').textContent = 'Haz clic para transferir con Nequi: verás QR y número de cuenta.'"
+          onblur="document.getElementById('payment-hint').textContent = 'Haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.'"
+          ontouchstart="document.getElementById('payment-hint').textContent = 'Toca para transferir con Nequi: verás QR y número de cuenta.'"
+        >
+          <img src="/Nequi.svg" alt="Nequi" class="w-full h-auto" />
+          <span class="text-xs text-gray-300 mt-2">Nequi</span>
+        </button>
+
+        <button
+          type="button"
+          class="payment-logo flex flex-col items-center p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400"
+          aria-describedby="payment-hint"
+          aria-label="Pago contra entrega"
+          style="width: max(4.5rem, 18vw);"
+          onmouseenter="document.getElementById('payment-hint').textContent = 'Pago contra entrega: no requiere transferencia.'"
+          onmouseleave="document.getElementById('payment-hint').textContent = 'Haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.'"
+          onfocus="document.getElementById('payment-hint').textContent = 'Pago contra entrega: no requiere transferencia.'"
+          onblur="document.getElementById('payment-hint').textContent = 'Haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.'"
+          ontouchstart="document.getElementById('payment-hint').textContent = 'Pago contra entrega: no requiere transferencia.'"
+          onclick="document.getElementById('payment-hint').textContent = 'Has seleccionado Pago contra entrega — no es necesaria una transferencia.'"
+        >
+          <img src="/Efectivo.svg" alt="Efectivo" class="w-full h-auto" />
+          <span class="text-xs text-gray-300 mt-2">Contra entrega</span>
+        </button>
       </div>
+
+      <p id="payment-hint" class="text-gray-300 mt-4 max-w-md text-center">
+        Toca o haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.
+      </p>
 
       <!-- Recuadro de Contra Entrega -->
       <div class="mt-8 p-4 bg-[#1b2a33] rounded-xl shadow-md border border-cyan-500/40 animate-fadeIn delay-400 max-w-md text-center">
@@ -68,15 +119,15 @@ import "../styles/global.css";
     cursor: pointer;
   }
   .payment-logo:hover {
-  transform: scale(1.15) rotate(-5deg);
+  transform: scale(1.15);
   box-shadow: 0 0 20px 5px rgba(0, 255, 255, 0.6);
   animation: bounce 0.5s ease;
 }
 
 /* Bounce */
 @keyframes bounce {
-  0%, 100% { transform: translateY(0) scale(1.15); }
-  50% { transform: translateY(-12px) scale(1.2); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
 }
 
 /* Fade-in al cargar */
