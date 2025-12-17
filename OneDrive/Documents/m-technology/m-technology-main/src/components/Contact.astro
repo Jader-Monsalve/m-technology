@@ -1,0 +1,431 @@
+---
+import "../styles/global.css";
+
+const whatsappNumber = "573019030729";
+const mapsAddress = "Calle 70# 52D-36, Itagüí, Antioquia";
+const mapsQuery = encodeURIComponent(mapsAddress);
+---
+
+<section
+  id="contact"
+  class="py-20 md:py-28 bg-white/15 backdrop-blur-md rounded-2xl p-8 max-w-6xl mx-auto mt-10 shadow-lg text-[#22223b]"
+>
+  <h2 class="text-3xl font-bold mb-10 text-center text-white">Contáctanos</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+    <div class="space-y-4">
+      <h3 class="text-xl font-semibold text-white">Ubicación:</h3>
+      <p class="text-white/80">{mapsAddress}</p>
+      <iframe
+        src={`https://www.google.com/maps?q=${mapsQuery}&output=embed`}
+        width="100%"
+        height="300"
+        class="border-0 rounded-xl shadow-md"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+    </div>
+
+    <!-- FORMULARIO (SIN CAMBIOS ESTRUCTURALES) -->
+    <form id="contactForm" class="flex flex-col gap-4">
+      <label class="flex flex-col gap-1 text-white">
+        Nombre:
+        <input type="text" name="name" required class="rounded-lg p-3 bg-white text-[#22223b] text-base outline-none" />
+      </label>
+      <label class="flex flex-col gap-1 text-white">
+        Ubicación:
+        <input type="text" name="location" required class="rounded-lg p-3 bg-white text-[#22223b] text-base outline-none" />
+      </label>
+      <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded mb-4 text-base font-semibold flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" /></svg>
+        <span>
+          <strong>¿Quieres comprar al por mayor?</strong> Contáctanos directamente por <a href="https://wa.me/573019030729" target="_blank" class="underline text-green-700 font-bold">WhatsApp</a> para recibir atención personalizada, descuentos y precios especiales para negocios o compras en cantidad.
+        </span>
+      </div>
+      <div id="productos-container" class="space-y-3">
+        <div class="producto flex flex-row items-center gap-2 bg-white rounded-xl p-2 sm:p-3 shadow-md border border-cyan-200 w-full">
+          <div class="flex flex-col w-full">
+            <select name="producto[]" required class="rounded-lg p-3 bg-white text-[#22223b] text-base outline-none flex-1 min-w-[180px]">
+              <option value="">Selecciona tu producto</option>
+              <option value="Airpods Pro 3">Airpods Pro 3 - 155.000</option>
+              <option value="P9 Pro Max">P9 Pro Max - 60.000</option>
+              <option value="Smartwatch 10 Ultra 2-GS">Smartwatch 10 Ultra 2-GS - 120.000</option>
+              <option value="Cargador de Iphone">Cargador de Iphone - 45.000</option>
+              <option value="Case MagSafe Neon">Case MagSafe Neon - 35.000</option>
+              <option value="Case Neon Fashion MagSafe">Case Neon Fashion MagSafe - 35.000</option>
+              <option value="Case Silicona MagSafe">Case Silicona MagSafe - 38.000</option>
+              <option value="Case Silicona Wallet MagSafe">Case Silicona Wallet MagSafe - 45.000</option>
+              <option value="Case Word 360">Case Word 360 - 45.000</option>
+              <option value="Luxury Case New Mobile">Luxury Case New Mobile - 50.000</option>
+              <option value="Luxury Silicone Case">Luxury Silicone Case - 45.000</option>
+            </select>
+            <div class="flex flex-row gap-2 mt-2 w-full">
+              <input type="number" name="cantidad[]" min="1" value="1" required class="w-20 rounded-lg p-3 bg-white text-[#22223b] text-base outline-none" />
+              <button type="button" class="eliminar bg-red-500/80 hover:bg-red-600 text-white px-3 py-2 rounded-lg flex-shrink-0" style="min-width:40px;max-width:48px;">🗑️</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="button" id="agregar-producto" class="bg-[#1b2a33] hover:shadow-cyan-500/40  text-white rounded-lg p-2 font-semibold">➕ Agregar otro producto</button>
+      <p id="total" class="text-lg font-bold text-white mt-4">Total: $0.000</p>
+      <label class="flex flex-col gap-1 text-white">
+        Forma de pago:
+        <select name="payment" required class="rounded-lg p-3 bg-white text-[#22223b] text-base outline-none">
+          <option value="">Selecciona una opción</option>
+          <option value="Bancolombia">Bancolombia</option>
+          <option value="Nequi">Nequi</option>
+          <option value="Efectivo">Efectivo</option>
+        </select>
+      </label>
+      <label class="flex flex-col gap-1 text-white">
+        Mensaje adicional:
+        <textarea name="message" class="rounded-lg p-3 bg-white text-[#22223b] text-base outline-none resize-none" rows="3"></textarea>
+      </label>
+      <label class="flex flex-col gap-1 text-white" id="comprobante-label">
+        Adjuntar comprobante <span id="comprobante-obligatorio" class="text-xs text-gray-300">:</span>
+        <input type="file" name="comprobante" id="comprobante" accept="image/*" class="rounded-lg p-2 bg-[#22223b]/10 text-white text-base outline-none" />
+        <div id="comprobante-preview" class="text-gray-300 text-sm mt-2">
+          <img id="comprobante-preview-img" src="" alt="preview" class="hidden max-w-xs max-h-40 rounded-md shadow-md" />
+          <div id="comprobante-preview-name" class="text-gray-300 text-sm mt-2"></div>
+        </div>
+      </label>
+      <div id="mayorista-aviso" class="text-yellow-300 text-sm font-semibold mt-2 hidden">
+        Para compras al por mayor, comunícate directamente con nosotros por WhatsApp para recibir atención personalizada y precios especiales.
+      </div>
+      <button type="submit" class="bg-green-500 text-white rounded-lg p-3 font-bold cursor-pointer transition-colors hover:bg-green-600">Enviar a WhatsApp</button>
+      <p id="upload-status" class="text-sm text-gray-300 mt-2"></p>
+    </section>
+
+    <!-- Overlay de subida / spinner -->
+    <div id="upload-overlay" role="dialog" aria-modal="true" aria-live="polite" class="hidden fixed inset-0 z-50 items-center justify-center bg-black/60">
+      <div class="flex flex-col items-center gap-4 bg-transparent p-4 rounded">
+        <div class="w-16 h-16 border-4 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true"></div>
+        <img id="upload-overlay-preview" src="" alt="miniatura comprobante" class="hidden max-w-xs max-h-40 rounded-md shadow-md" />
+        <p id="upload-overlay-text" class="text-white text-sm">Procesando comprobante, espera...</p>
+        <div class="pt-2">
+          <button id="upload-cancel" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Cancelar</button>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+</section>
+
+document.addEventListener("DOMContentLoaded", () => {
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var whatsappNumber = "573019030729";
+  var container = document.getElementById("productos-container");
+  var btnAgregar = document.getElementById("agregar-producto");
+  var form = document.getElementById("contactForm");
+
+  // Precios de productos
+  var precios = {
+    "Airpods Pro 3": 155000,
+    "P9 Pro Max": 60000,
+    "Smartwatch 10 Ultra 2-GS": 120000,
+    "Cargador de Iphone": 45000,
+    "Case MagSafe Neon": 35000,
+    "Case Neon Fashion MagSafe": 35000,
+    "Case Silicona MagSafe": 35000,
+    "Case Silicona Wallet MagSafe": 45000,
+    "Case Word 360": 45000,
+    "Luxury Case New Mobile": 50000,
+    "Luxury Silicone Case": 45000,
+  };
+
+  function calcularTotal() {
+    if (!container) return 0;
+    var productos = Array.from(container.querySelectorAll(".producto"));
+    var total = 0;
+    productos.forEach(function (p) {
+      var selectEl = p.querySelector("select[name='producto[]']");
+      var inputEl = p.querySelector("input[name='cantidad[]']");
+      var producto = (selectEl && selectEl instanceof HTMLSelectElement) ? selectEl.value : "";
+      var cantidad = (inputEl && inputEl instanceof HTMLInputElement) ? parseInt(inputEl.value || "0", 10) : 0;
+      if (typeof producto === "string" && precios.hasOwnProperty(producto)) {
+        var precioUnitario = precios[producto];
+        total += precioUnitario * cantidad;
+      }
+    });
+    var totalElement = document.getElementById("total");
+    if (totalElement) {
+      var formatter = new Intl.NumberFormat('es-CO', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      totalElement.textContent = "Total: $" + formatter.format(total);
+    }
+    return total;
+  }
+
+  if (!container || !btnAgregar || !form) return;
+
+  // Inicializar eventos para el primer producto
+  var productos = container.querySelectorAll(".producto");
+  productos.forEach(function (p) {
+    var select = p.querySelector("select[name='producto[]']");
+    var input = p.querySelector("input[name='cantidad[]']");
+    var btnEliminar = p.querySelector(".eliminar");
+    if (select) select.addEventListener("change", calcularTotal);
+    if (input) input.addEventListener("input", calcularTotal);
+    if (btnEliminar) {
+      btnEliminar.addEventListener("click", function() {
+        p.remove();
+        calcularTotal();
+      });
+    }
+  });
+
+  btnAgregar.addEventListener("click", function () {
+    var div = document.createElement("div");
+    div.className = "producto flex flex-row items-center gap-2 bg-white rounded-xl p-2 sm:p-3 shadow-md border border-cyan-200 w-full";
+    div.innerHTML = `
+      <div class="flex flex-col w-full">
+        <select name="producto[]" required class="rounded-lg p-3 bg-white text-[#22223b] text-base outline-none flex-1 min-w-[180px]">
+          <option value="">Selecciona tu producto</option>
+          <option value="Airpods Pro 3">Airpods Pro 3 - 155.000</option>
+          <option value="P9 Pro Max">P9 Pro Max - 60.000</option>
+          <option value="Smartwatch 10 Ultra 2-GS">Smartwatch 10 Ultra 2-GS - 120.000</option>
+          <option value="Cargador de Iphone">Cargador de Iphone - 45.000</option>
+          <option value="Case MagSafe Neon">Case MagSafe Neon - 35.000</option>
+          <option value="Case Neon Fashion MagSafe">Case Neon Fashion MagSafe - 35.000</option>
+          <option value="Case Silicona MagSafe">Case Silicona MagSafe - 35.000</option>
+          <option value="Case Silicona Wallet MagSafe">Case Silicona Wallet MagSafe - 45.000</option>
+          <option value="Case Word 360">Case Word 360 - 45.000</option>
+          <option value="Luxury Case New Mobile">Luxury Case New Mobile - 50.000</option>
+          <option value="Luxury Silicone Case">Luxury Silicone Case - 45.000</option>
+        </select>
+        <div class="flex flex-row gap-2 mt-2 w-full">
+          <input type="number" name="cantidad[]" min="1" value="1" required class="w-20 rounded-lg p-3 bg-white text-[#22223b] text-base outline-none" />
+          <button type="button" class="eliminar bg-red-500/80 hover:bg-red-600 text-white px-3 py-2 rounded-lg flex-shrink-0" style="min-width:40px;max-width:48px;">🗑️</button>
+        </div>
+      </div>
+    `;
+    container.appendChild(div);
+    calcularTotal();
+    var btnEliminar = div.querySelector(".eliminar");
+    if (btnEliminar) {
+      btnEliminar.addEventListener("click", function() {
+        div.remove();
+        calcularTotal();
+      });
+    }
+    var select = div.querySelector("select[name='producto[]']");
+    var input = div.querySelector("input[name='cantidad[]']");
+    if (select) select.addEventListener("change", calcularTotal);
+    if (input) input.addEventListener("input", calcularTotal);
+  });
+
+
+  // --- Comprobante: vista previa y subida ---
+  var comprobantePreview = document.getElementById('comprobante-preview');
+  var comprobanteInputInit = document.getElementById('comprobante') as HTMLInputElement;
+  var comprobantePreviewImg = document.getElementById('comprobante-preview-img') as HTMLImageElement;
+  var comprobantePreviewName = document.getElementById('comprobante-preview-name');
+  var overlayPreviewImg = document.getElementById('upload-overlay-preview') as HTMLImageElement;
+  if (comprobanteInputInit && comprobantePreview) {
+    var currentObjectUrl = null;
+    comprobanteInputInit.addEventListener('change', function () {
+      var f = comprobanteInputInit.files && comprobanteInputInit.files.length ? comprobanteInputInit.files[0] : null;
+      if (currentObjectUrl) {
+        URL.revokeObjectURL(currentObjectUrl);
+        currentObjectUrl = null;
+      }
+      if (!f) {
+        if (comprobantePreviewImg) { comprobantePreviewImg.src = ''; comprobantePreviewImg.classList.add('hidden'); }
+        if (comprobantePreviewName) comprobantePreviewName.textContent = '';
+        return;
+      }
+      if (f.type.startsWith('image/')) {
+        var url = URL.createObjectURL(f);
+        currentObjectUrl = url;
+        if (comprobantePreviewImg) { comprobantePreviewImg.src = url; comprobantePreviewImg.classList.remove('hidden'); }
+        if (comprobantePreviewName) comprobantePreviewName.textContent = f.name;
+        if (overlayPreviewImg) { overlayPreviewImg.src = url; overlayPreviewImg.classList.remove('hidden'); }
+      } else if (f.type === 'application/pdf') {
+        if (comprobantePreviewImg) { comprobantePreviewImg.src = ''; comprobantePreviewImg.classList.add('hidden'); }
+        if (comprobantePreviewName) comprobantePreviewName.textContent = 'PDF: ' + f.name;
+        if (overlayPreviewImg) { overlayPreviewImg.src = ''; overlayPreviewImg.classList.add('hidden'); }
+      } else {
+        if (comprobantePreviewImg) { comprobantePreviewImg.src = ''; comprobantePreviewImg.classList.add('hidden'); }
+        if (comprobantePreviewName) comprobantePreviewName.textContent = 'Archivo: ' + f.name;
+      }
+    });
+  }
+
+  // --- SUBMIT con subida de comprobante ---
+  var activeAbortController = null;
+  var activeNewWin = null;
+  var submitAborted = false;
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var submitBtn = form.querySelector("button[type='submit']") as HTMLButtonElement;
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.classList.add('opacity-60', 'cursor-not-allowed'); }
+    var newWin = null;
+    try { newWin = window.open('', '_blank'); } catch (err) { newWin = null; }
+    activeNewWin = newWin;
+    submitAborted = false;
+    var overlay = document.getElementById('upload-overlay');
+    var overlayText = document.getElementById('upload-overlay-text');
+    if (overlay) overlay.classList.remove('hidden'), overlay.classList.add('flex');
+
+    var name = (form.querySelector("[name='name']") as HTMLInputElement).value;
+    var location = (form.querySelector("[name='location']") as HTMLInputElement).value;
+    var payment = (form.querySelector("[name='payment']") as HTMLSelectElement).value;
+    var message = (form.querySelector("[name='message']") as HTMLTextAreaElement).value;
+    var comprobanteInput = form.querySelector("#comprobante") as HTMLInputElement;
+    var comprobanteFile = comprobanteInput && comprobanteInput.files && comprobanteInput.files.length ? comprobanteInput.files[0] : null;
+    var uploadStatus = document.getElementById('upload-status');
+
+    // Configuración de subida opcional
+    var UPLOAD_CONFIG = {
+      provider: 'cloudinary',
+      cloudName: 'dhhs7htsz',
+      uploadPreset: 'M-Technology'
+    };
+    var comprobanteURL = null;
+
+    var productos = Array.from(container.querySelectorAll(".producto")).map(function (p) {
+      var select = p.querySelector("select[name='producto[]']") as HTMLSelectElement;
+      var input = p.querySelector("input[name='cantidad[]']") as HTMLInputElement;
+      return (select ? select.value : "") + " (x" + (input ? input.value : "1") + ")";
+    });
+
+    var isImage = comprobanteFile ? comprobanteFile.type.startsWith('image/') : false;
+    if (comprobanteFile && !isImage) {
+      if (uploadStatus) uploadStatus.textContent = 'Solo se permiten imágenes para que aparezcan en la vista previa de WhatsApp.';
+    }
+
+    if (UPLOAD_CONFIG.provider === 'cloudinary' && UPLOAD_CONFIG.cloudName && UPLOAD_CONFIG.uploadPreset && comprobanteFile) {
+      try {
+        if (uploadStatus) uploadStatus.textContent = 'Preparando comprobante...';
+        if (overlayText) overlayText.textContent = 'Preparando comprobante...';
+        var imageBlob = null;
+        if (isImage) imageBlob = comprobanteFile;
+        if (imageBlob) {
+          if (uploadStatus) uploadStatus.textContent = 'Subiendo miniatura del comprobante...';
+          if (overlayText) overlayText.textContent = 'Subiendo comprobante...';
+          var fdImg = new FormData();
+          fdImg.append('file', imageBlob, 'comprobante.jpg');
+          fdImg.append('upload_preset', UPLOAD_CONFIG.uploadPreset);
+          activeAbortController = new AbortController();
+          var respImg = await fetch(`https://api.cloudinary.com/v1_1/${UPLOAD_CONFIG.cloudName}/auto/upload`, { method: 'POST', body: fdImg, signal: activeAbortController.signal });
+          var jsonImg = await respImg.json();
+          if (jsonImg && jsonImg.secure_url) {
+            comprobanteURL = jsonImg.secure_url;
+            if (uploadStatus) uploadStatus.textContent = 'Miniatura subida.';
+            if (overlayText) overlayText.textContent = 'Miniatura subida.';
+          }
+          if (comprobanteURL && overlayPreviewImg) {
+            overlayPreviewImg.src = comprobanteURL;
+            overlayPreviewImg.classList.remove('hidden');
+          }
+        }
+        if (comprobanteURL) {
+          if (uploadStatus) uploadStatus.textContent = 'Comprobante subido.';
+          if (overlayText) overlayText.textContent = 'Subida completa. Abriendo WhatsApp...';
+        } else {
+          if (uploadStatus) uploadStatus.textContent = 'No se pudo subir el comprobante; se enviará el nombre de archivo.';
+          if (overlayText) overlayText.textContent = 'No se pudo subir el comprobante. Abriendo WhatsApp...';
+        }
+      } catch (err) {
+        if (err && err.name === 'AbortError') {
+          submitAborted = true;
+          if (uploadStatus) uploadStatus.textContent = 'Subida cancelada.';
+          if (overlayText) overlayText.textContent = 'Subida cancelada.';
+        } else {
+          if (uploadStatus) uploadStatus.textContent = 'Error subiendo comprobante; adjunta manualmente en el chat.';
+          if (overlayText) overlayText.textContent = 'Error subiendo comprobante. Abriendo WhatsApp...';
+        }
+      } finally {
+        activeAbortController = null;
+      }
+    }
+
+    var comprobanteText = "No adjunta comprobante";
+    if (comprobanteURL) {
+      comprobanteText = `Imagen comprobante:\n${comprobanteURL}`;
+    } else if (comprobanteFile) {
+      comprobanteText = `Comprobante adjuntado: ${comprobanteFile.name} (adjuntar manualmente en el chat)`;
+    }
+
+    var total = calcularTotal();
+    
+    // Construir lista de productos con precios individuales
+    var productosDetalle = Array.from(container.querySelectorAll(".producto")).map(function (p) {
+      var select = p.querySelector("select[name='producto[]']") as HTMLSelectElement;
+      var input = p.querySelector("input[name='cantidad[]']") as HTMLInputElement;
+      var producto = select ? select.value : "";
+      var cantidad = input ? parseInt(input.value || "1", 10) : 1;
+      var precioUnitario = precios[producto] || 0;
+      var subtotal = precioUnitario * cantidad;
+      return `${producto} (x${cantidad}) - $${new Intl.NumberFormat('es-CO').format(precioUnitario)} c/u = $${new Intl.NumberFormat('es-CO').format(subtotal)}`;
+    }).join("\n");
+    
+    var text = encodeURIComponent(
+      "Hola, soy " + name +
+      "\nUbicación: " + location +
+      "\n\nProductos:\n" + productosDetalle +
+      "\n\nTotal: $" + new Intl.NumberFormat('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(total) +
+      "\nForma de pago: " + payment +
+      "\nMensaje: " + message +
+      "\n" + comprobanteText
+    );
+
+    var url = `https://wa.me/${whatsappNumber}?text=${text}`;
+    if (submitAborted) {
+      if (activeNewWin && !activeNewWin.closed) {
+        try { activeNewWin.close(); } catch (e) { }
+      }
+      if (overlay) overlay.classList.remove('flex'), overlay.classList.add('hidden');
+      if (comprobantePreviewImg) { comprobantePreviewImg.src = ''; comprobantePreviewImg.classList.add('hidden'); }
+      if (comprobantePreviewName) comprobantePreviewName.textContent = '';
+      if (overlayPreviewImg) { overlayPreviewImg.src = ''; overlayPreviewImg.classList.add('hidden'); }
+      var submitBtnToReenable = form.querySelector("button[type='submit']") as HTMLButtonElement;
+      if (submitBtnToReenable) { submitBtnToReenable.disabled = false; submitBtnToReenable.classList.remove('opacity-60', 'cursor-not-allowed'); }
+      activeNewWin = null;
+      return;
+    }
+    try {
+      if (newWin) {
+        newWin.location.href = url;
+        setTimeout(function () {
+          if (overlay) overlay.classList.remove('flex'), overlay.classList.add('hidden');
+        }, 1500);
+      } else {
+        window.location.href = url;
+      }
+    } catch (err) {
+      window.location.href = url;
+    } finally {
+      activeNewWin = null;
+    }
+  });
+
+  // Handler del botón cancelar
+  var cancelBtn = document.getElementById('upload-cancel');
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', function () {
+      submitAborted = true;
+      if (activeAbortController) {
+        try { activeAbortController.abort(); } catch (e) { }
+        activeAbortController = null;
+      }
+      if (activeNewWin && !activeNewWin.closed) {
+        try { activeNewWin.close(); } catch (e) { }
+      }
+      var overlay = document.getElementById('upload-overlay');
+      if (overlay) overlay.classList.remove('flex'), overlay.classList.add('hidden');
+      var uploadStatus = document.getElementById('upload-status');
+      if (uploadStatus) uploadStatus.textContent = 'Carga cancelada por el usuario.';
+      var submitBtn = form.querySelector("button[type='submit']") as HTMLButtonElement;
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.classList.remove('opacity-60', 'cursor-not-allowed'); }
+    });
+  }
+
+  calcularTotal();
+});
+</script>

@@ -1,0 +1,274 @@
+---
+import "../styles/global.css";
+---
+
+<section
+  id="payments"
+  class="flex flex-col items-center justify-center text-white bg-transparent relative overflow-hidden px-6"
+>
+  <div class="max-w-6xl w-full flex flex-col items-center text-center">
+
+    <!-- Título -->
+    <h2 class="text-3xl md:text-4xl font-bold mb-12 animate-fadeIn">
+      Métodos de Pago
+    </h2>
+
+    <!-- Contenido -->
+    <div class="flex flex-col items-center justify-center animate-fadeIn delay-200 w-full">
+      <h3 class="text-2xl font-semibold mb-4 text-green-500">Opciones Disponibles</h3>
+      <p class="text-gray-300 mb-6 max-w-md">
+        Realizamos <span class="text-green-500 font-semibold">envíos en toda Antioquia</span>.
+        Puedes pagar de la forma que más te convenga:
+      </p>
+
+      <!-- Logos -->
+      <div class="flex gap-6 sm:gap-8 flex-wrap justify-center items-center">
+        <button
+          type="button"
+          class="payment-logo flex flex-col items-center p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400"
+          data-method="bancolombia"
+          aria-describedby="payment-hint"
+          aria-label="Pagar con Bancolombia"
+          
+        >
+          <img src="/Bancolombia.svg" alt="Bancolombia" class="w-full h-auto" />
+          <span class="text-sm text-gray-300 mt-2">Bancolombia</span>
+        </button>
+
+        <button
+          type="button"
+          class="payment-logo flex flex-col items-center p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400"
+          data-method="nequi"
+          aria-describedby="payment-hint"
+          aria-label="Pagar con Nequi"
+          
+        >
+          <img src="/Nequi.svg" alt="Nequi" class="w-full h-auto" />
+          <span class="text-sm text-gray-300 mt-2">Nequi</span>
+        </button>
+
+        <button
+          type="button"
+          class="payment-logo flex flex-col items-center p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400"
+          aria-describedby="payment-hint"
+          aria-label="Pago contra entrega"
+          
+        >
+          <img src="/Efectivo.svg" alt="Efectivo" class="w-full h-auto" />
+          <span class="text-sm text-gray-300 mt-2">Contra entrega</span>
+        </button>
+      </div>
+
+      <p id="payment-hint" class="text-gray-300 mt-4 max-w-md text-center">
+        Toca o haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.
+      </p>
+
+      <!-- Recuadro de Contra Entrega -->
+      <div class="mt-8 p-4 bg-[#1b2a33] rounded-xl shadow-md border border-cyan-500/40 animate-fadeIn delay-400 max-w-md text-center">
+        <h4 class="text-xl font-semibold text-green-500">Pago Contra Entrega</h4>
+        <p class="text-white mt-2">Recibe tu pedido en casa y paga cuando lo recibas.</p>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Modal de método de pago (QR + cuenta) -->
+<div id="payment-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60">
+  <div class="bg-[#0f1724] max-w-lg w-full rounded-xl p-6 relative text-white shadow-xl mx-4">
+    <button id="payment-modal-close" class="absolute top-3 right-3 text-gray-300 hover:text-white">✕</button>
+    <h3 id="payment-modal-title" class="text-xl font-semibold mb-2">Método de pago</h3>
+    <p class="text-sm text-gray-300 mb-4">Consignaciones solo si te sientes seguro de comprar con nosotros. Cuando hagas la transferencia (total o adelanto), adjunta el comprobante en el formulario de contacto al enviar la información.</p>
+
+    <div class="flex flex-col md:flex-row items-center gap-4">
+      <img id="payment-modal-qr" src="/Payments/QR-Bancolombia.jpg" alt="QR" class="w-48 h-48 object-contain bg-white p-2 rounded-md" />
+      <div class="flex-1 text-left">
+        <p class="text-sm text-gray-300">Cuenta / Número:</p>
+        <p id="payment-modal-account" class="text-lg font-mono text-white my-2">---</p>
+        <div class="flex gap-2">
+          <button id="payment-copy" class="bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg px-3 py-2">Copiar número</button>
+          <a id="payment-open-bank" target="_blank" rel="noopener" class="bg-transparent border border-gray-600 text-gray-200 rounded-lg px-3 py-2 hover:border-cyan-500">Abrir app/banco</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Responsive sizes: más grandes en móviles, más proporcionados en pantallas grandes */
+  .payment-logo {
+    width: 9rem; /* móvil por defecto — más visible en pantallas pequeñas */
+    height: auto;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Etiqueta dentro del logo ligeramente mayor en móvil */
+  .payment-logo span { font-size: 0.9rem; }
+
+  /* Punto intermedio (tablets / pantallas medianas): ligeramente más pequeño que móvil pero aún visible */
+  @media (min-width: 768px) {
+    .payment-logo { width: 8rem; }
+    .payment-logo span { font-size: 0.95rem; }
+  }
+
+  /* Pantallas grandes (PC): reducir un poco respecto a móvil para mantener balance visual */
+  @media (min-width: 1024px) {
+    .payment-logo { width: 7rem; }
+    .payment-logo span { font-size: 0.9rem; }
+  }
+
+  /* Hover y animación solo en dispositivos con puntero fino (PC) */
+  @media (hover: hover) and (pointer: fine) {
+    .payment-logo:hover {
+      transform: scale(1.15);
+      box-shadow: 0 0 20px 5px rgba(0, 255, 255, 0.6);
+      animation: bounce 0.5s ease;
+    }
+  }
+
+  /* Para dispositivos táctiles: feedback por acción (touch) sin bounce */
+  @media (pointer: coarse) {
+    .payment-logo { transition-duration: 0.12s; }
+    .payment-logo:active {
+      transform: scale(1.08);
+      box-shadow: none;
+      animation: none;
+    }
+  }
+
+  /* Asegurar que la imagen ocupe el contenedor sin distorsionar */
+  .payment-logo img { max-width: 100%; height: auto; display: block; }
+
+/* Bounce */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+/* Fade-in al cargar */
+.animate-fadeIn {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.8s forwards;
+}
+.animate-fadeIn.delay-200 { animation-delay: 0.2s; }
+.animate-fadeIn.delay-400 { animation-delay: 0.4s; }
+
+@keyframes fadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+<script>
+  // Datos de ejemplo: reemplazar por los reales si los tienes
+  const PAYMENT_DATA = {
+    bancolombia: {
+      title: 'Bancolombia',
+      account: 'Cuenta: 23034169691 - Ahorros (M-Technology)',
+      qr: '/Payments/QR-Bancolombia.jpg',
+      open: 'https://www.grupobancolombia.com'
+    },
+    nequi: {
+      title: 'Nequi',
+      account: 'Nequi: 3006997396 (M-Technology)',
+      qr: '/Payments/QR-Nequi.jpeg',
+      open: 'https://nequi.com'
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('payment-modal');
+    const qrImg = document.getElementById('payment-modal-qr');
+    const accountEl = document.getElementById('payment-modal-account');
+    const titleEl = document.getElementById('payment-modal-title');
+    const copyBtn = document.getElementById('payment-copy');
+    const openBtn = document.getElementById('payment-open-bank');
+    const closeBtn = document.getElementById('payment-modal-close');
+
+    document.querySelectorAll('.payment-logo[data-method]').forEach(img => {
+      img.addEventListener('click', () => {
+        const method = img.getAttribute('data-method');
+        if (!method) return;
+        const data = (PAYMENT_DATA as any)[method];
+        if (!data) return;
+        if (titleEl) titleEl.textContent = `Pagar con ${data.title}`;
+        if (qrImg) {
+          qrImg.setAttribute('src', data.qr);
+          qrImg.style.display = 'block';
+          qrImg.onerror = () => {
+            qrImg.style.display = 'none';
+            // si no carga la imagen, mostrar texto alternativo
+            if (accountEl) accountEl.textContent = data.account + ' (QR no disponible)';
+          };
+          qrImg.onload = () => {
+            // si carga, mostrar cuenta tal cual
+            if (accountEl) accountEl.textContent = data.account;
+          };
+        }
+        if (accountEl) accountEl.textContent = data.account;
+        if (openBtn) openBtn.setAttribute('href', data.open);
+        if (modal) modal.classList.remove('hidden');
+        if (modal) modal.classList.add('flex');
+      });
+    });
+
+    // --- Nuevo: comportamiento de hint según dispositivo (touch vs pointer:fine)
+    const hintEl = document.getElementById('payment-hint');
+    const supportsCoarse = (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) || ('ontouchstart' in window);
+
+    document.querySelectorAll('.payment-logo').forEach(btn => {
+      const method = btn.getAttribute('data-method');
+      if (supportsCoarse) {
+        // dispositivos táctiles: sólo mostrar mensaje corto al tocar
+        btn.addEventListener('touchstart', () => {
+          if (!hintEl) return;
+          if (method === 'bancolombia') hintEl.textContent = 'Toca para transferir con Bancolombia: verás QR y número de cuenta.';
+          else if (method === 'nequi') hintEl.textContent = 'Toca para transferir con Nequi: verás QR y número de cuenta.';
+          else hintEl.textContent = 'Toca para ver opciones de pago.';
+        }, { passive: true });
+      } else {
+        // PC: comportamiento completo con enter/leave
+        btn.addEventListener('mouseenter', () => {
+          if (!hintEl) return;
+          if (method === 'bancolombia') hintEl.textContent = 'Haz clic para transferir con Bancolombia: verás QR y número de cuenta.';
+          else if (method === 'nequi') hintEl.textContent = 'Haz clic para transferir con Nequi: verás QR y número de cuenta.';
+          else hintEl.textContent = 'Pago contra entrega: no requiere transferencia.';
+        });
+        btn.addEventListener('mouseleave', () => {
+          if (!hintEl) return;
+          hintEl.textContent = 'Haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.';
+        });
+        btn.addEventListener('focus', () => {
+          if (!hintEl) return;
+          if (method === 'bancolombia') hintEl.textContent = 'Haz clic para transferir con Bancolombia: verás QR y número de cuenta.';
+          else if (method === 'nequi') hintEl.textContent = 'Haz clic para transferir con Nequi: verás QR y número de cuenta.';
+          else hintEl.textContent = 'Pago contra entrega: no requiere transferencia.';
+        });
+        btn.addEventListener('blur', () => {
+          if (!hintEl) return;
+          hintEl.textContent = 'Haz clic en Bancolombia o Nequi para ver QR y datos de cuenta y realizar la transferencia.';
+        });
+      }
+    });
+
+    if (copyBtn) copyBtn.addEventListener('click', async () => {
+      const text = accountEl?.textContent || '';
+      try {
+        await navigator.clipboard.writeText(text || '');
+        copyBtn.textContent = 'Copiado';
+        setTimeout(() => (copyBtn.textContent = 'Copiar número'), 2000);
+      } catch (err) {
+        alert('No se pudo copiar automáticamente. Selecciona y copia manualmente.');
+      }
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', () => {
+      if (modal) modal.classList.add('hidden');
+      if (modal) modal.classList.remove('flex');
+    });
+  });
+</script>

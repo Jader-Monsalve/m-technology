@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 200">
+  <rect width="500" height="200" fill="#1f1a36"></rect>
+  <polygon points="150,50 200,100 150,150 100,100" fill="#ff0077"></polygon>
+  <polygon points="200,100 250,150 200,200 150,150" fill="#00d4ff"></polygon>
+  <text x="280" y="120" font-size="50" font-family="Arial, sans-serif" fill="#fff">Nequi</text>
+</svg>
